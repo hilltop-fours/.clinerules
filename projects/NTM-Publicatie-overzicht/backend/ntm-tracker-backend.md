@@ -8,12 +8,12 @@ Minimal, focused API for dataset tracking and import management. This service ha
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | N/A | 2026-01-30 |
-| Commit Message | From Swagger JSON | |
+| Last Verified Commit | 7d30558 | 2026-01-30 |
+| Commit Message | feat(web): #103282 Refactor categories and add more dataset filters | |
 | Swagger Version | latest | 2026-01-30 |
 
-**Status**: ✓ Documented from OpenAPI spec as of 2026-01-30
-**Next Review**: Check repository commits
+**Status**: ✓ Updated with recent backend changes as of 2026-01-30
+**Next Review**: Check repository commits after 7d30558
 
 ---
 
@@ -21,9 +21,10 @@ Minimal, focused API for dataset tracking and import management. This service ha
 
 | Feature | Main Endpoints | HTTP Methods | Auth Required | Purpose |
 |---------|----------------|--------------|---------------|---------|
-| **Dataset Queries** | `/datasets`, `/datasets/{id}` | GET | Keycloak NTM | Retrieve and search datasets |
+| **Dataset Queries** | `/datasets`, `/datasets/{id}` | GET | Keycloak NTM | Retrieve and search datasets with filtering, sorting, and pagination |
 | **Dataset Import** | `/datasets/import` | POST | Keycloak NTM | Bulk import datasets into tracker |
 | **Dataset Rejection** | `/datasets/{id}/reject` | POST | Keycloak NTM | Reject imported datasets with reason |
+| **Category Queries** | `/external-categories`, `/external-categories/{id}` | GET | Keycloak NTM | Retrieve dataset categories for filtering |
 
 ---
 
@@ -39,11 +40,15 @@ Minimal, focused API for dataset tracking and import management. This service ha
 
 **Query Parameters**:
 - `status` (array of enum, optional) - Filter by dataset status. Values: `NEW`, `IMPORT_STARTED`, `IMPORT_FAILED`, `IMPORTED`, `REJECTED`
+- `organizationId` (array of UUID, optional) - Filter by organization ID(s) ← **NEW**
+- `categoryId` (array of UUID, optional) - Filter by external category ID(s) ← **NEW**
+- `updatedSince` (DateTime ISO 8601, optional) - Filter datasets updated on or after this date ← **NEW**
+- `updatedUntil` (DateTime ISO 8601, optional) - Filter datasets updated on or before this date ← **NEW**
 - `isDeleted` (boolean, optional) - Filter by deletion state (true/false)
 - `pageable` (Pageable, required) - Pagination parameters
   - `page` (int, 0-indexed) - Page number
   - `size` (int, min 1) - Items per page
-  - `sort` (array, optional) - Sort criteria (e.g., `["id,desc"]`)
+  - `sort` (array, optional) - Sort criteria. Supported properties: `title`, `organization` (by org name), `createdOn`, `updatedOn` (e.g., `["updatedOn,desc"]`)
 
 **Response** (HTTP 200): PagedModelDatasetDto
 ```json
@@ -68,7 +73,14 @@ Minimal, focused API for dataset tracking and import management. This service ha
       "externalModifiedOn": "2026-01-20T10:00:00Z",
       "dataModifiedOn": "2026-01-25T15:30:00Z",
       "tags": ["public-transport", "realtime"],
-      "categories": ["TRAFFIC_MANAGEMENT"],
+      "categories": [
+        {
+          "id": "cat-uuid-001",
+          "site": "DATA_OVERHEID",
+          "identifier": "traffic-management",
+          "name": "Traffic Management"
+        }
+      ],
       "status": "IMPORTED",
       "rejectedReason": null,
       "ntmPublicationId": "pub-uuid-001",
@@ -93,8 +105,25 @@ Minimal, focused API for dataset tracking and import management. This service ha
 
 **Notes**:
 - Pagination is required (pageable parameter must be provided)
-- Status filter allows multiple values for OR queries
+- Status and organization/category filters allow multiple values for OR queries
 - Results can be very large; use pagination to avoid timeout
+- Date range filters (updatedSince/updatedUntil) use ISO 8601 format
+- Sorting supports: `title`, `organization` (by org name), `createdOn`, `updatedOn`
+
+**Example Queries**:
+```
+# Filter by status and organization
+GET /datasets?status=IMPORTED&status=NEW&organizationId=a1b2c3d4&pageable.page=0&pageable.size=20
+
+# Filter by category and date range
+GET /datasets?categoryId=cat-uuid-001&updatedSince=2026-01-01T00:00:00Z&updatedUntil=2026-01-30T23:59:59Z&pageable.page=0&pageable.size=50
+
+# Sort by updated date descending
+GET /datasets?pageable.sort=updatedOn,desc&pageable.page=0&pageable.size=20
+
+# Exclude deleted datasets, order by title
+GET /datasets?isDeleted=false&pageable.sort=title,asc&pageable.page=0&pageable.size=20
+```
 
 ---
 
@@ -128,7 +157,14 @@ Minimal, focused API for dataset tracking and import management. This service ha
   "externalModifiedOn": "2026-01-20T10:00:00Z",
   "dataModifiedOn": "2026-01-25T15:30:00Z",
   "tags": ["public-transport", "realtime"],
-  "categories": ["TRAFFIC_MANAGEMENT"],
+  "categories": [
+    {
+      "id": "cat-uuid-001",
+      "site": "DATA_OVERHEID",
+      "identifier": "traffic-management",
+      "name": "Traffic Management"
+    }
+  ],
   "status": "IMPORTED",
   "rejectedReason": null,
   "ntmPublicationId": "pub-uuid-001",
@@ -180,7 +216,14 @@ Minimal, focused API for dataset tracking and import management. This service ha
       "externalModifiedOn": "2026-01-20T10:00:00Z",
       "dataModifiedOn": "2026-01-25T15:30:00Z",
       "tags": ["public-transport"],
-      "categories": ["TRAFFIC_MANAGEMENT"],
+      "categories": [
+    {
+      "id": "cat-uuid-001",
+      "site": "DATA_OVERHEID",
+      "identifier": "traffic-management",
+      "name": "Traffic Management"
+    }
+  ],
       "status": "NEW",
       "createdOn": "2026-01-20T10:00:00Z",
       "updatedOn": "2026-01-20T10:00:00Z",
@@ -203,6 +246,75 @@ Minimal, focused API for dataset tracking and import management. This service ha
 - Either `datasetIds` (array of existing dataset UUIDs) or `datasets` (full objects) can be provided
 - Import process runs asynchronously; check status via GET `/datasets/{id}`
 - Status changes from NEW → IMPORT_STARTED → IMPORTED or IMPORT_FAILED
+
+---
+
+### External Categories
+
+#### GET /external-categories
+
+**Authentication**: Keycloak NTM (OAuth2)
+
+**Description**: Retrieve all available external dataset categories. Used for filtering datasets by category.
+
+**Query Parameters**:
+- `pageable` (Pageable, optional) - Pagination parameters (default returns all)
+  - `page` (int, 0-indexed) - Page number
+  - `size` (int, min 1) - Items per page
+  - `sort` (array, optional) - Sort criteria (e.g., `["name,asc"]`)
+
+**Response** (HTTP 200): Array<ExternalCategoryDto>
+```json
+[
+  {
+    "id": "cat-uuid-001",
+    "site": "DATA_OVERHEID",
+    "identifier": "traffic-management",
+    "name": "Traffic Management"
+  },
+  {
+    "id": "cat-uuid-002",
+    "site": "DATA_OVERHEID",
+    "identifier": "public-transport",
+    "name": "Public Transport"
+  }
+]
+```
+
+**Possible Status Codes**:
+- 200 OK - Categories retrieved successfully
+- 401 Unauthorized - Missing or invalid authentication token
+
+**Notes**:
+- Results are ordered by name by default
+- Categories are used to filter datasets in `GET /datasets?categoryId=...`
+- Each category is site-specific (identified by site + identifier combination)
+
+---
+
+#### GET /external-categories/{id}
+
+**Authentication**: Keycloak NTM (OAuth2)
+
+**Description**: Retrieve a single external category by its unique identifier.
+
+**Path Parameters**:
+- `{id}` (UUID) - External category identifier
+
+**Response** (HTTP 200): ExternalCategoryDto
+```json
+{
+  "id": "cat-uuid-001",
+  "site": "DATA_OVERHEID",
+  "identifier": "traffic-management",
+  "name": "Traffic Management"
+}
+```
+
+**Possible Status Codes**:
+- 200 OK - Category found
+- 401 Unauthorized - Missing/invalid authentication
+- 404 Not Found - Category with given ID does not exist
 
 ---
 
@@ -243,7 +355,14 @@ Minimal, focused API for dataset tracking and import management. This service ha
   "externalModifiedOn": "2026-01-20T10:00:00Z",
   "dataModifiedOn": "2026-01-25T15:30:00Z",
   "tags": ["public-transport"],
-  "categories": ["TRAFFIC_MANAGEMENT"],
+  "categories": [
+    {
+      "id": "cat-uuid-001",
+      "site": "DATA_OVERHEID",
+      "identifier": "traffic-management",
+      "name": "Traffic Management"
+    }
+  ],
   "status": "REJECTED",
   "rejectedReason": "DUPLICATE",
   "ntmPublicationId": null,
@@ -287,7 +406,7 @@ Minimal, focused API for dataset tracking and import management. This service ha
 | `externalModifiedOn` | DateTime | No | ISO 8601 | Last modification timestamp from external source |
 | `dataModifiedOn` | DateTime | No | ISO 8601 | When the actual dataset content was last updated |
 | `tags` | Array<String> | No | - | Searchable tags/keywords |
-| `categories` | Array<String> | No | - | Data categorization (e.g., TRAFFIC_MANAGEMENT) |
+| `categories` | Array<ExternalCategoryDto> | No | nested objects | Dataset categories from external sources (can be used to filter) ← **UPDATED** |
 | `status` | Enum | Yes | NEW, IMPORT_STARTED, IMPORT_FAILED, IMPORTED, REJECTED | Current processing status |
 | `rejectedReason` | Enum | No | DUPLICATE, INCOMPLETE, OUTDATED, UNSUITABLE | Why dataset was rejected (null if not rejected) |
 | `ntmPublicationId` | UUID | No | - | Link to NTM publication if imported successfully |
@@ -316,7 +435,14 @@ Minimal, focused API for dataset tracking and import management. This service ha
   "externalModifiedOn": "2026-01-20T10:00:00Z",
   "dataModifiedOn": "2026-01-25T15:30:00Z",
   "tags": ["public-transport", "realtime"],
-  "categories": ["TRAFFIC_MANAGEMENT"],
+  "categories": [
+    {
+      "id": "cat-uuid-001",
+      "site": "DATA_OVERHEID",
+      "identifier": "traffic-management",
+      "name": "Traffic Management"
+    }
+  ],
   "status": "IMPORTED",
   "rejectedReason": null,
   "ntmPublicationId": "pub-uuid-001",
@@ -350,6 +476,34 @@ Minimal, focused API for dataset tracking and import management. This service ha
   "abbreviation": "MoI",
   "cbsCode": "CBS-123",
   "tags": ["government", "ministry"]
+}
+```
+
+---
+
+### ExternalCategoryDto
+
+**Used in**: DatasetDto.categories (nested), GET `/external-categories`, GET `/external-categories/{id}`
+
+| Field | Type | Required | Constraints | Description |
+|-------|------|----------|-------------|-------------|
+| `id` | UUID | Yes (response) | - | Unique category identifier |
+| `site` | Enum | Yes | DATA_OVERHEID, NGR, RDW, RWS, CBS | Source catalog this category comes from |
+| `identifier` | String | Yes | unique per site | External system's category identifier |
+| `name` | String | Yes | - | Human-readable category name |
+
+**Notes**:
+- Each category is uniquely identified by the combination of (site, identifier)
+- Use the `id` field to filter datasets via `GET /datasets?categoryId=...`
+- Category names are auto-generated for DATA_OVERHEID sources
+
+**Example**:
+```json
+{
+  "id": "cat-uuid-001",
+  "site": "DATA_OVERHEID",
+  "identifier": "traffic-management",
+  "name": "Traffic Management"
 }
 ```
 
@@ -572,3 +726,6 @@ Retrieves paginated results filtered by multiple status values.
 - **Pagination Required**: All list endpoints (GET `/datasets`) require pagination parameters
 - **External Organization Metadata**: Organizations from external sources are stored as `ExternalOrganizationDto` for audit/reference
 - **Keycloak Integration**: Tight integration with NDW's Keycloak instance; all users must be provisioned there
+- **Enhanced Filtering**: Dataset queries now support filtering by organization, category, and date range ← **NEW**
+- **Category System**: Categories are managed centrally at `/external-categories` and used for dataset filtering ← **NEW**
+- **Sorting Capabilities**: Query results can be sorted by title, organization name, creation date, or update date ← **NEW**
