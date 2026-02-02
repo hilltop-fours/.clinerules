@@ -1,41 +1,70 @@
-# Angular Best Practices
+# ANGULAR CODING RULES
 
-## Modern Angular Patterns
+## CONTROL FLOW - MANDATORY SYNTAX
 
-### Control Flow
-- Use `@if`, `@else`, `@for`, `@let` (NOT `*ngIf`, `*ngFor`, etc.)
-- Modern control flow syntax is cleaner and more performant
+ALWAYS use new control flow syntax:
+- `@if (condition)` - NOT `*ngIf="condition"`
+- `@else` - NOT `*ngIf="!condition"`
+- `@for (item of items; track item.id)` - NOT `*ngFor="let item of items"`
+- `@let variable = expression` - for template variables
 
-### Signals
-- Prefer using Angular signals where appropriate
-- Use signal-based `input()` and `output()` instead of decorators
-- Use signals for reactive state when it makes sense
-- Do NOT force signals everywhere - if something doesn't fit, use traditional approach
+NEVER use old syntax: `*ngIf`, `*ngFor`, `*ngSwitch`
+
+## SIGNALS - USAGE RULES
+
+PREFER signals for reactive state:
+- Use `input()` for component inputs - NOT `@Input()` decorator
+- Use `output()` for component outputs - NOT `@Output()` decorator
+- Use signals for component state that needs reactivity
+- Use `computed()` for derived values
+
+DO NOT force signals when not needed:
+- Traditional approaches are acceptable if signals complicate the code
 - Avoid `toSignal()` casting unless absolutely necessary
+- If signal refactoring is complex, note as potential future task instead of implementing
 
-### Component Structure
-- Keep components focused and single-responsibility
-- Use standalone components when possible
-- Organize imports clearly
+## INDEX FILES - MANDATORY
 
-### Index Files
-- Always create `index.ts` files for better import management
-- When creating new components, services, or types: add an `index.ts` file that re-exports the main exports
-- This allows cleaner imports: `import { MyComponent } from './components/my-component'`
+WHEN creating new directories containing:
+- Components
+- Services
+- Repositories
+- Types
+- Models
 
-## Code Quality
+THEN create `index.ts` file that re-exports main exports.
 
-### Comments
-- Keep code clean with minimal comments
-- Code should be self-explanatory through good naming and structure
-- Only add comments for:
-  - Temporary/mocked data (mark clearly for easy removal later)
-  - Complex logic that needs explanation of "why" (not "what")
-- Avoid obvious comments that just describe what the code does
+WHEN modifying code in directories without `index.ts`:
+- Create the `index.ts` file
 
-### Naming Conventions
-- Use clear, descriptive names
-- Follow Angular naming conventions (component.ts, service.ts, etc.)
-- Use kebab-case for file names
-- Use PascalCase for class names
-- Use camelCase for variables and methods
+PURPOSE: Enable imports like `import { MyComponent } from './components/my-component'` instead of `import { MyComponent } from './components/my-component/my-component.component'`
+
+## COMMENTS - RULES
+
+ONLY add comments when:
+- Marking temporary/mocked data: Use `// TODO: remove mock data` or `// Temporary for testing`
+- Explaining complex logic: Explain "why" not "what"
+
+DO NOT add comments for:
+- Obvious code that is self-explanatory
+- Describing what code does (use clear naming instead)
+
+## NAMING CONVENTIONS - ENFORCE
+
+File names: kebab-case
+- `user-profile.component.ts`
+- `auth.service.ts`
+
+Class names: PascalCase
+- `UserProfileComponent`
+- `AuthService`
+
+Variables and methods: camelCase
+- `userName`
+- `getUserData()`
+
+Follow Angular file naming patterns:
+- Components: `*.component.ts`
+- Services: `*.service.ts`
+- Models: `*.model.ts`
+- Repositories: `*.repository.ts`
