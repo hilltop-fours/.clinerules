@@ -10,7 +10,7 @@ Complete reference for the traffic-sign-inspection-backend API. This service han
 |------|-------|------|
 | Last Verified Commit | 96cc5c8 | 2026-01-28 |
 | Commit Message | Merged PR 115364: Feature #108675 Add missing properties for frontend | |
-| Swagger Version | latest | |
+| Swagger Version | latest | 2026-01-30 |
 
 **Status**: ✓ Up to date as of 2026-01-28
 **Next Review**: Check commits after 96cc5c8
