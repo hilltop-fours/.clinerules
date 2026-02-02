@@ -68,3 +68,27 @@ Follow Angular file naming patterns:
 - Services: `*.service.ts`
 - Models: `*.model.ts`
 - Repositories: `*.repository.ts`
+
+## STATE MANAGEMENT
+
+State management: NgRx (ngrx)
+Async operations: RxJS Observables
+Follow existing patterns in codebase
+
+## MODELS AND CONSTANTS - AVOID HARDCODED STRINGS
+
+AVOID hardcoding strings - check for models first
+
+Use models extensively for single source of truth:
+- Status values
+- Constants
+- Enum-like data
+
+Before hardcoding string values:
+1. Search codebase for existing models or constants
+2. Check design system for component models
+3. Use model reference instead of hardcoding
+
+Example: Instead of hardcoding `'DEFINITIVE'`, find publication status model
+
+Purpose: Prevent duplication, centralize updates
