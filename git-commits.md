@@ -1,38 +1,57 @@
-# Git Commit Standards
+# GIT COMMIT MESSAGE RULES
 
-## Commit Message Format
-- Single line only, no body
-- Format: `type(scope): description`
-- Always in English
-- Description: lowercase, concise action describing what was done
+## FORMAT - MANDATORY
 
-## Commit Types
-- `feat`: New feature
-- `bug`: Bug fix
-- `chore`: Maintenance tasks (refactoring, dependencies, config)
-- `docs`: Documentation changes
-- `test`: Adding or updating tests
+Single line only. NO body. NO co-authored-by.
 
-## Scope
-- Use the name of the main component/feature affected
-- Examples: `auth`, `api`, `ui`, `map-controls`, `user-profile`
-- Keep scopes consistent within a project
+Standard format: `type(scope): description`
 
-## Examples
+Project-specific format (if project config specifies story/task IDs): `type(scope): #[story-id] #[task-id] description`
+
+## LANGUAGE
+
+ALL commit messages: English
+Description: lowercase only
+Description: concise action (what was done)
+
+## COMMIT TYPES
+
+Use these types:
+- `feat` - New feature
+- `bug` - Bug fix
+- `chore` - Maintenance (refactoring, dependencies, config)
+- `docs` - Documentation
+- `test` - Tests
+
+Project config may override available types. Check project-specific config file.
+
+## SCOPE
+
+Scope = main component/feature affected
+Examples: `auth`, `api`, `ui`, `map-controls`, `user-profile`
+Check project-specific config for scope conventions.
+
+## EXAMPLES
+
+Standard commits:
 - `feat(auth): add login functionality`
 - `bug(api): fix user data not loading`
 - `chore(deps): update angular to v17`
 
-## WIP Commits
-- Format: `WIP: [descriptive context of current work]`
-- Use during development for incremental progress
-- Provide enough context for future reference
-- Examples:
-  - `WIP: add user authentication logic`
-  - `WIP: implement map zoom controls`
+Project-specific with IDs:
+- `feat(auth): #12345 #67890 add login functionality`
+- `bug(api): #12345 #67890 fix user data not loading`
 
-## Git Operations Policy
-- NEVER stage files unless explicitly asked
-- NEVER create commits unless explicitly asked
-- NEVER push commits unless explicitly asked
-- User will manage git operations manually except when specifically requested
+WIP commits:
+- `WIP: add user authentication logic`
+- `WIP: implement map zoom controls`
+
+## GIT OPERATIONS - CRITICAL RULES
+
+NEVER stage files unless user explicitly requests it
+NEVER create commits unless user explicitly requests it
+NEVER push commits unless user explicitly requests it
+
+Exception: WIP commits when user requests them during development
+
+User manages git operations manually. Only execute git commands when specifically instructed.
