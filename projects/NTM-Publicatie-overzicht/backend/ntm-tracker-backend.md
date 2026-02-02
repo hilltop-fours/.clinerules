@@ -25,6 +25,7 @@ Minimal, focused API for dataset tracking and import management. This service ha
 | **Dataset Import** | `/datasets/import` | POST | Keycloak NTM | Bulk import datasets into tracker |
 | **Dataset Rejection** | `/datasets/{id}/reject` | POST | Keycloak NTM | Reject imported datasets with reason |
 | **Category Queries** | `/external-categories`, `/external-categories/{id}` | GET | Keycloak NTM | Retrieve dataset categories for filtering |
+| **Organization Queries** | `/external-organizations`, `/external-organizations/{id}` | GET | Keycloak NTM | Retrieve external organizations for dataset filtering |
 
 ---
 
@@ -315,6 +316,80 @@ GET /datasets?isDeleted=false&pageable.sort=title,asc&pageable.page=0&pageable.s
 - 200 OK - Category found
 - 401 Unauthorized - Missing/invalid authentication
 - 404 Not Found - Category with given ID does not exist
+
+---
+
+### External Organizations
+
+#### GET /external-organizations
+
+**Authentication**: Keycloak NTM (OAuth2)
+
+**Description**: Retrieve all available external organizations. Used for filtering datasets by organization.
+
+**Query Parameters**:
+- `pageable` (Pageable, optional) - Pagination parameters (default returns all)
+  - `page` (int, 0-indexed) - Page number
+  - `size` (int, min 1) - Items per page
+  - `sort` (array, optional) - Sort criteria (e.g., `["name,asc"]`)
+
+**Response** (HTTP 200): Array<ExternalOrganizationDto>
+```json
+[
+  {
+    "id": "org-uuid-001",
+    "identifier": "org-123",
+    "name": "Ministry of Infrastructure",
+    "abbreviation": "MoI",
+    "cbsCode": "CBS-123",
+    "tags": ["government", "ministry"]
+  },
+  {
+    "id": "org-uuid-002",
+    "identifier": "org-456",
+    "name": "Dutch Railway Company",
+    "abbreviation": "NS",
+    "cbsCode": "CBS-456",
+    "tags": ["private", "transport"]
+  }
+]
+```
+
+**Possible Status Codes**:
+- 200 OK - Organizations retrieved successfully
+- 401 Unauthorized - Missing or invalid authentication token
+
+**Notes**:
+- Results are ordered by name by default
+- Organizations are used to filter datasets in `GET /datasets?organizationId=...`
+
+---
+
+#### GET /external-organizations/{id}
+
+**Authentication**: Keycloak NTM (OAuth2)
+
+**Description**: Retrieve a single external organization by its unique identifier.
+
+**Path Parameters**:
+- `{id}` (UUID) - External organization identifier
+
+**Response** (HTTP 200): ExternalOrganizationDto
+```json
+{
+  "id": "org-uuid-001",
+  "identifier": "org-123",
+  "name": "Ministry of Infrastructure",
+  "abbreviation": "MoI",
+  "cbsCode": "CBS-123",
+  "tags": ["government", "ministry"]
+}
+```
+
+**Possible Status Codes**:
+- 200 OK - Organization found
+- 401 Unauthorized - Missing/invalid authentication
+- 404 Not Found - Organization with given ID does not exist
 
 ---
 
