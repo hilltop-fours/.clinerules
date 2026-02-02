@@ -14,5 +14,4 @@ This project uses the shared clinerules repository for consistent guidelines acr
 For general guidelines used across all projects, see:
 - [angular.md](angular.md) - Angular best practices
 - [git-commits.md](git-commits.md) - Git commit standards
-- [storybook.md](storybook.md) - Storybook conventions
-- Additional shared rules as they are added
+- Additional shared rules will be added as needed
