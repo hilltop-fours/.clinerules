@@ -8,18 +8,22 @@ Complete reference guide for all backend services and their API endpoints. Use t
 
 Use this section to track which backend commits have been reviewed for API changes.
 
-| Backend Service | Last Verified Commit | Commit Message | Date |
-|-----------------|---------------------|-----------------|------|
-| traffic-sign-inspection-backend | 96cc5c8 | Merged PR 115364: Feature #108675 Add missing properties for frontend | 2026-01-28 |
-| traffic-sign-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-area-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-feedback-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-wkd-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-wkd-derivation-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-hgv-charge-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
-| traffic-sign-profile-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| Backend Service | Last Verified Commit | Commit Message | Date | Swagger JSON |
+|-----------------|---------------------|-----------------|------|--------------|
+| traffic-sign-inspection-backend | 96cc5c8 | Merged PR 115364: Feature #108675 Add missing properties for frontend | 2026-01-28 | N/A |
+| traffic-sign-backend | 20f430d1 | Merged PR 115667: Feature #100281 Send new user mail | 2026-01-30 | traffic-sign-backend-swagger.json ✓ |
+| traffic-sign-area-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
+| traffic-sign-feedback-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
+| traffic-sign-wkd-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
+| traffic-sign-wkd-derivation-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
+| traffic-sign-hgv-charge-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
+| traffic-sign-profile-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] | [PENDING] |
 
-**How to use**: When you check a backend repo for changes, update the commit hash and message. Next time, only new commits after this one need to be reviewed.
+**How to use**:
+- When you check a backend repo for changes, update the commit hash and message
+- Add Swagger JSON filename when available (store as `{backend-name}-swagger.json`)
+- Next time, only new commits after the listed one need to be reviewed
+- Reference Swagger JSON for exact DTO structures, enums, and constraints
 
 ---
 
