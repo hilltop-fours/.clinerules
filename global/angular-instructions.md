@@ -49,6 +49,12 @@ DO NOT add comments for:
 - Obvious code that is self-explanatory
 - Describing what code does (use clear naming instead)
 
+NEVER remove existing comments:
+- Preserve ALL comments that were already in the code
+- This includes organizational comments (e.g., `// Tab state`, `// Filters section`)
+- This includes explanatory comments from other developers
+- Only remove comments if they become factually incorrect after your changes
+
 ## TYPESCRIPT TYPING - STRICT RULES
 
 NEVER use `any` type:
