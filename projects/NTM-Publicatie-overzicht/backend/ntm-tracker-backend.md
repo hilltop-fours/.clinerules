@@ -8,12 +8,12 @@ Minimal, focused API for dataset tracking and import management. This service ha
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 7d30558 | 2026-01-30 |
+| Last Verified Commit | 6c79c20 | 2026-01-30 |
 | Commit Message | feat(web): #103282 Refactor categories and add more dataset filters | |
 | Swagger Version | latest | 2026-01-30 |
 
 **Status**: ✓ Updated with recent backend changes as of 2026-01-30
-**Next Review**: Check repository commits after 7d30558
+**Next Review**: Check repository commits after 6c79c20
 
 ---
 
