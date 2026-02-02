@@ -10,7 +10,7 @@ Complete reference for the traffic-sign-area-backend API. This service handles a
 |------|-------|------|
 | Last Verified Commit | d6fb302b | 2026-01-27 |
 | Commit Message | Feature #108771 Optimize pipeline | |
-| Swagger Version | latest | |
+| Swagger Version | latest | 2026-01-30 |
 
 **Status**: ✓ Up to date as of 2026-01-27
 **Next Review**: Check commits after d6fb302b
