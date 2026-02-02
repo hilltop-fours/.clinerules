@@ -9,9 +9,9 @@ Shared configuration and guidelines for Claude Code CLI across multiple projects
 ├── claude.md           # Main entry point (project-specific, rename per project)
 ├── angular.md          # Angular-specific guidelines
 ├── git-commits.md      # Git commit message standards
-├── storybook.md        # Storybook conventions
 ├── projects/           # Project-specific rules
-│   └── grg-wegkenmerken.md
+│   ├── grg-wegkenmerken.md
+│   └── ntm-publicatie-overzicht.md
 └── README.md          # This file
 ```
 
