@@ -4,6 +4,25 @@ Complete reference guide for all backend services and their API endpoints. Use t
 
 ---
 
+## COMMIT TRACKING - Last Verified Changes
+
+Use this section to track which backend commits have been reviewed for API changes.
+
+| Backend Service | Last Verified Commit | Commit Message | Date |
+|-----------------|---------------------|-----------------|------|
+| traffic-sign-inspection-backend | 96cc5c8 | Merged PR 115364: Feature #108675 Add missing properties for frontend | 2026-01-28 |
+| traffic-sign-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-area-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-feedback-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-wkd-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-wkd-derivation-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-hgv-charge-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+| traffic-sign-profile-backend | [TO BE VERIFIED] | [TO BE VERIFIED] | [TO BE VERIFIED] |
+
+**How to use**: When you check a backend repo for changes, update the commit hash and message. Next time, only new commits after this one need to be reviewed.
+
+---
+
 ## QUICK REFERENCE BY FEATURE
 
 Use this table to quickly find which backend service handles your feature:
@@ -381,9 +400,16 @@ PUT /findings/{id}/status
   - Response: TrafficSignFindingDto (JSON)
 ```
 
-**DTO**: TrafficSignFindingDto - Finding details including type, status, traffic sign reference
+**DTO**: TrafficSignFindingDto - Finding details including:
+- `trafficSign`: TrafficSignDto (nested object with traffic sign ID reference)
+- `reason`: FindingReason enum (category of finding)
+- `status`: FindingStatus enum (current status: NEW, CLOSED, RESOLVED, etc.)
+- `nlsId`: UUID (optional NLS issue reference)
+- `feedbackText`: String (optional user feedback)
 
-**Enum**: FindingReason - Categories of findings (e.g., missing data, validation errors)
+**Note**: The `trafficSign` field is a nested `TrafficSignDto` object. Access the traffic sign ID via `trafficSign.id`, not directly from the finding.
+
+**Enum**: FindingReason - Categories of findings (e.g., INVALID_BLACK_CODE, NO_COUNTERPART, UNKNOWN_TRAFFIC_ORDER, WKD_INCONSISTENCY_SPEED, MISSING_DIRECTION)
 
 ---
 
@@ -1220,18 +1246,18 @@ POST /sftp/write
 
 ```
 GET /speeds/road-section/{roadSectionId}
-  - Requires: ROLE_TRAFFIC_SIGN_EDITOR
+  - Requires: ROLE_TRAFFIC_SIGN_WRITER
   - Path: {roadSectionId} = int
   - Response: SpeedMutationProposalDto (JSON)
 
 POST /speeds/road-section/{roadSectionId}
-  - Requires: ROLE_TRAFFIC_SIGN_EDITOR
+  - Requires: ROLE_TRAFFIC_SIGN_WRITER
   - Path: {roadSectionId} = int
   - Response: SpeedMutationProposalDto (JSON)
   - Action: Get or create proposal
 
 DELETE /speeds/{id}
-  - Requires: ROLE_TRAFFIC_SIGN_EDITOR
+  - Requires: ROLE_TRAFFIC_SIGN_WRITER
   - Path: {id} = UUID
   - Response: HTTP 200 OK
 ```
@@ -1254,8 +1280,7 @@ DELETE /speeds/{id}
 | Role | Purpose | Access Level |
 |------|---------|--------------|
 | `ROLE_ADMIN` | Full system access | All endpoints |
-| `ROLE_USER` | Basic user access | Read and submit data |
-| `ROLE_TRAFFIC_SIGN_WRITER` | Modify traffic signs | CRUD on traffic signs |
+| `ROLE_TRAFFIC_SIGN_WRITER` | Modify traffic signs | CRUD on traffic signs, WKD derivation proposals |
 | `ROLE_TRAFFIC_SIGN_API` | External API client | GeoJSON API access |
 | `ROLE_WKD_EDITOR` | Edit WKD restrictions | All WKD endpoints |
 | `ROLE_EDITOR` | Edit areas and zones | Area backend |
@@ -1269,6 +1294,7 @@ DELETE /speeds/{id}
 | `ROLE_HGV_CHARGE_EDITOR` | Edit HGV data | HGV mutations |
 | `ROLE_COUNTY_READER` | Read county data | County/town reads |
 | `ROLE_EMISSION_ZONE_API` | Emission zone API | IBBM access |
+| `ROLE_USER` | User feedback submission | Submit feedback and corrections (used in feedback-backend) |
 
 ---
 
