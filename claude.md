@@ -3,7 +3,7 @@
 This project uses the shared clinerules repository for consistent guidelines across multiple projects.
 
 ## Project-Specific Rules
-**IMPORTANT**: See [projects/grg-wegkenmerken.md](projects/grg-wegkenmerken.md) for all project-specific guidelines, including:
+**IMPORTANT**: See [projects/GRG-Wegkenmerken-verkeersborden.md](projects/GRG-Wegkenmerken-verkeersborden.md) for all project-specific guidelines, including:
 - Working directory and git operations (must use `traffic-sign-frontend/` subdirectory)
 - Branch naming and commit message conventions
 - Project structure and technology stack
