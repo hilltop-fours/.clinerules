@@ -70,10 +70,10 @@ Scope naming:
 - Root level files: Use filename only
   - Examples: `claude`, `readme`
 
-Commit types (same as work projects):
+Commit types (only these 3 for .clinerules repo):
 - `docs` - Documentation updates (most common for .clinerules)
-- `chore` - Restructuring, file moves, cleanup
 - `feat` - New instruction sets or major additions
+- `chore` - Restructuring, file moves, cleanup
 
 Examples:
 - `docs(global/git-instructions): add wip squashing rules for duplicate commit prevention`
