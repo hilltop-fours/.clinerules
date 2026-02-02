@@ -46,6 +46,37 @@ WIP commits:
 - `WIP: add user authentication logic`
 - `WIP: implement map zoom controls`
 
+## BRANCH NAMING
+
+Format: `type/[story-id]/[task-id]/[description]`
+
+Types:
+- `bug` - Bug fixes
+- `feature` - New features
+
+Rules:
+- Always create branches from `main`
+- Description: kebab-case
+- Story ID and Task ID: Obtained from project workflow (see WORKFLOW section)
+
+Example: `bug/106187/108922/fix-verkeersbesluit-id-uppercase-validation`
+
+## WORKFLOW - AZURE DEVOPS INTEGRATION
+
+User starts tasks by providing Azure DevOps screenshots containing:
+- Story ID and Task ID
+- Task description and acceptance criteria
+- Comments (if any)
+
+Screenshots provide context for:
+- Branch naming (story-id, task-id, description)
+- Commit type (bug, feat, chore)
+- Implementation details
+
+Development process:
+- Work done incrementally
+- WIP commits used between stages when requested
+
 ## GIT OPERATIONS - CRITICAL RULES
 
 NEVER stage files unless user explicitly requests it
