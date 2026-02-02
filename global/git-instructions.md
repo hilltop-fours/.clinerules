@@ -254,6 +254,14 @@ NEVER stage files unless user explicitly requests it
 NEVER create commits unless user explicitly requests it
 NEVER push commits unless user explicitly requests it
 
+**CRITICAL: Each request is ONE-TIME ONLY**
+- If user says "commit this", make ONE commit then STOP
+- If user says "push", make ONE push then STOP
+- DO NOT continue staging/committing/pushing in subsequent operations unless explicitly asked again
+- Each git operation requires fresh explicit permission
+- "Always allow" in settings does NOT mean "do this automatically forever"
+- You must be explicitly instructed for EACH separate git operation
+
 Exception: WIP commits when user requests them during development
 Exception: Squashing WIP commits when user explicitly requests it (see WIP SQUASHING section above)
 
