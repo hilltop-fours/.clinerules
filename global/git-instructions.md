@@ -254,9 +254,16 @@ NEVER stage files unless user explicitly requests it
 NEVER create commits unless user explicitly requests it
 NEVER push commits unless user explicitly requests it
 
+**CRITICAL: Each operation must be separate**
+- NEVER combine `git add` and `git commit` in a single command (e.g., `git add . && git commit`)
+- NEVER combine `git commit` and `git push` in a single command (e.g., `git commit && git push`)
+- Each operation (add, commit, push) must be executed in SEPARATE tool calls
+- This ensures user permission prompts work correctly for each operation
+
 **CRITICAL: Each request is ONE-TIME ONLY**
-- If user says "commit this", make ONE commit then STOP
-- If user says "push", make ONE push then STOP
+- If user says "stage these files", run ONLY `git add` then STOP
+- If user says "commit this", run ONLY `git commit` then STOP
+- If user says "push", run ONLY `git push` then STOP
 - DO NOT continue staging/committing/pushing in subsequent operations unless explicitly asked again
 - Each git operation requires fresh explicit permission
 - "Always allow" in settings does NOT mean "do this automatically forever"
