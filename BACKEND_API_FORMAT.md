@@ -49,7 +49,7 @@ Purpose: Track which Swagger version and commits have been reviewed.
 |------|-------|------|
 | Last Verified Commit | [commit-hash] | [YYYY-MM-DD] |
 | Commit Message | [message summary] | |
-| Swagger Version | latest | |
+| Swagger Version | latest | [YYYY-MM-DD] |
 
 **Status**: ✓ Up to date as of [date]
 **Next Review**: Check commits after [commit-hash]
