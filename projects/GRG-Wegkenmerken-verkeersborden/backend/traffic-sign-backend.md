@@ -10,7 +10,7 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 |------|-------|------|
 | Last Verified Commit | 20f430d1 | 2026-01-30 |
 | Commit Message | Merged PR 115667: Feature #100281 Send new user mail when new user is created | |
-| Swagger Version | latest | |
+| Swagger Version | latest | 2026-01-30 |
 
 **Status**: ✓ Up to date
 **Next Review**: Check commits after 20f430d1
