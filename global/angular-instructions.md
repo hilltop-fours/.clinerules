@@ -49,6 +49,33 @@ DO NOT add comments for:
 - Obvious code that is self-explanatory
 - Describing what code does (use clear naming instead)
 
+## TYPESCRIPT TYPING - STRICT RULES
+
+NEVER use `any` type:
+- Always define proper interfaces, types, or use generics
+- If data structure is unknown, use `unknown` and add type guards
+- Create interface/type definitions for complex objects
+- SonarQube will flag `any` usage as an error
+
+Example - WRONG:
+```typescript
+getCategoryDisplay(categories: any[]): string {
+  return categories.map(c => c.name).join(', ');
+}
+```
+
+Example - CORRECT:
+```typescript
+interface Category {
+  id: string;
+  name: string;
+}
+
+getCategoryDisplay(categories: Category[]): string {
+  return categories.map(c => c.name).join(', ');
+}
+```
+
 ## NAMING CONVENTIONS - ENFORCE
 
 File names: kebab-case
