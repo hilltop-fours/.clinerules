@@ -10,8 +10,8 @@ Shared configuration and guidelines for Claude Code CLI across multiple projects
 ├── angular.md          # Angular-specific guidelines
 ├── git-commits.md      # Git commit message standards
 ├── projects/           # Project-specific rules
-│   ├── grg-wegkenmerken.md
-│   └── ntm-publicatie-overzicht.md
+│   ├── GRG-Wegkenmerken-verkeersborden.md
+│   └── NTM-Publicatie-overzicht.md
 └── README.md          # This file
 ```
 
