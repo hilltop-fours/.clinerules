@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 20f430d1 | 2026-01-30 |
-| Commit Message | Merged PR 115667: Feature #100281 Send new user mail when new user is created | |
-| Swagger Version | latest | 2026-01-30 |
+| Last Verified Commit | 46ecff61 | 2026-02-03 |
+| Commit Message | feat(findings): #108675 Fix duplicate filter | |
+| Swagger Version | latest | 2026-02-03 |
 
-**Status**: ✓ Up to date
-**Next Review**: Check commits after 20f430d1
+**Status**: ✓ Up to date as of 2026-02-03
+**Next Review**: Check commits after 46ecff61
 
 ---
 
@@ -31,6 +31,7 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 | **Opening Hours** | `/opening-hours/check-valid` | POST | None |
 | **Road Authorities** | `/road-authorities`, `/road-authorities/search` | GET | None |
 | **Info Messages** | `/info-messages` | GET, POST, PUT, DELETE | Admin role |
+| **GraphQL** | `/graphql` | POST | Reader role |
 
 ---
 
@@ -789,6 +790,35 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 ---
 
+### GraphQL
+
+#### POST /graphql
+
+**Authentication**: ROLE_READER (or higher)
+
+**Description**: GraphQL query endpoint for traffic sign data. Supports querying traffic signs with filtering by RVV codes, status, and road section IDs. Returns traffic sign details including text signs with ObCode values.
+
+**Request Body**: Standard GraphQL JSON (`query` field with the GraphQL query string)
+
+**Example Query**:
+```graphql
+{
+  findTrafficSigns(rvvCodes: ["C17", "C18"], status: PLACED, roadSectionIds: [1, 2, 3]) {
+    ndwId
+    rvvCode
+    textSigns {
+      obCode
+    }
+  }
+}
+```
+
+**Response** (HTTP 200): Standard GraphQL response wrapping the queried data.
+
+> **Note**: ObCode enum values use zero-padded single-digit codes (`OB01`–`OB09`) and lowercase directional suffixes (`OB17l`, `OB17r`). See [ObCode](#obcode) enum for the full list.
+
+---
+
 ## DATA TYPES (DTOs)
 
 ### TrafficSignResponseDto
@@ -1040,6 +1070,42 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 | STARTED | Upload started |
 | COMPLETED | Upload completed successfully |
 | FAILED | Upload failed |
+
+---
+
+### ObCode
+
+**Used in**: GraphQL `textSigns.obCode` field
+
+Text sign object codes exposed via the GraphQL API. Single-digit OB codes are zero-padded (`OB01`–`OB09`). Directional variants use a lowercase suffix (`l` = left, `r` = right).
+
+> **Changed in commit `a7b27c0e`**: Single-digit codes renamed from `OB1`–`OB9` to `OB01`–`OB09`. Directional suffixes changed from uppercase (`OB17L`) to lowercase (`OB17l`).
+
+| Value | Description |
+|-------|-------------|
+| C22A1–C22A9 | C22 sub-type codes |
+| C22C1 | C22 C-variant code |
+| OB01–OB09 | Object codes 1–9 (zero-padded) |
+| OB10–OB16 | Object codes 10–16 |
+| OB17l, OB17r | Object code 17, left / right |
+| OB18l, OB18r | Object code 18, left / right |
+| OB19 | Object code 19 |
+| OB51–OB66 | Object codes 51–66 |
+| OB101–OB115 | Object codes 101–115 |
+| OB254, OB256, OB259 | Object codes 254, 256, 259 |
+| OB301–OB311, OB313, OB320 | Object codes 301–320 (subset) |
+| OB401, OB411 | Object codes 401, 411 |
+| OB501l, OB501r | Object code 501, left / right |
+| OB502–OB505 | Object codes 502–505 |
+| OB617–OB621, OB627 | Object codes 617–627 (subset) |
+| OB711 | Object code 711 |
+| OB711l, OB711r | Object code 711, left / right |
+| OB712 | Object code 712 |
+| OB712l, OB712r | Object code 712, left / right |
+| OB713 | Object code 713 |
+| OB713l, OB713r | Object code 713, left / right |
+| OB719, OB720 | Object codes 719, 720 |
+| OTHER | Any other object code |
 
 ---
 
