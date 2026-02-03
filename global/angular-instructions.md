@@ -23,6 +23,14 @@ DO NOT force signals when not needed:
 - Avoid `toSignal()` casting unless absolutely necessary
 - If signal refactoring is complex, note as potential future task instead of implementing
 
+SELF-CHECK — BEFORE finalising any added or edited code, verify that no legacy decorators slipped in:
+- `@Input()` → should be `input()`
+- `@Output()` with `new EventEmitter()` → should be `output()`
+- `@ViewChild()` → should be `viewChild()` (Angular 19+)
+- `@HostListener()` → should be `hostListener()` (Angular 19+)
+
+This check is needed because training data is dominated by the older decorator syntax. When in doubt, scan the file you just touched for any of these decorators and replace with the signal equivalent before finishing.
+
 ## INDEX FILES - MANDATORY
 
 WHEN creating new directories containing:
