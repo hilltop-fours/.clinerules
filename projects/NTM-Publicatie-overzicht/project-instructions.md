@@ -28,38 +28,104 @@ Working directory path contains: `/NTM-Publicatie-overzicht`
 
 When implementing features related to:
 
-- **Publications (CRUD)** → Read `backend/ntm-backend.md`
-  - Create, read, update, delete publications
-  - Publication metadata and details
-
 - **Data Publications** → Read `backend/ntm-backend.md`
-  - Data publication management
-  - Data publication search and filtering
-
-- **Organizations** → Read `backend/ntm-backend.md`
-  - Organization management, users, roles, permissions
-
-- **Notifications** → Read `backend/ntm-backend.md`
-  - Subscriptions, alerts, preferences
+  - CRUD operations on data publications
+  - Search, filtering, pagination
+  - Approve, reject, hold, transfer ownership
+  - Favorites on data publications
+  - Import via DCAT dataset (`/data-publications/import`)
 
 - **Datasets & Imports** → Read `backend/ntm-tracker-backend.md`
-  - Dataset import, tracking, ingestion, processing
-  - Import status, history, errors
+  - Dataset listing, retrieval, rejection
+  - Dataset import (`/datasets/import`)
+
+- **Datasets (listing only)** → Read `backend/ntm-backend.md`
+  - List all datasets (`/datasets`)
+
+- **Organizations** → Read `backend/ntm-backend.md`
+  - CRUD operations on organizations
+  - Role requests (create, approve, deny)
+  - User listing per organization
+  - Logo management
+  - Permissions / moderation settings
+  - Organization repair utilities (`/repair/organizations`)
+
+- **Users** → Read `backend/ntm-backend.md`
+  - CRUD operations on users
+  - Current user info (`/users/current`)
+  - Password reset
+
+- **Notifications & Subscriptions** → Read `backend/ntm-backend.md`
+  - Notification listing and count (`/notifications`)
+  - Email subscription management (`/subscriptions/mine`)
+
+- **Favorites** → Read `backend/ntm-backend.md`
+  - List, add, delete favorites (`/favorites`)
+
+- **Regions** → Read `backend/ntm-backend.md`
+  - Region lookup by code
+  - Municipality listing (`/regions/municipalities`)
+
+- **Standards** → Read `backend/ntm-backend.md`
+  - CRUD operations on standards
+
+- **Data Regulations** → Read `backend/ntm-backend.md`
+  - List all regulations and get by ID
+
+- **Statistics** → Read `backend/ntm-backend.md`
+  - User, organization, and data publication counts
+
+- **Export** → Read `backend/ntm-backend.md`
+  - Export publications and users (`/export`)
+
+- **Info Messages** → Read `backend/ntm-backend.md`
+  - CRUD operations on info messages
+  - Current active messages and count
+
+- **Blobs / Images** → Read `backend/ntm-backend.md`
+  - Upload and retrieve images (`/blobs/image`)
+
+- **Contact Requests** → Read `backend/ntm-backend.md`
+  - Submit contact request (`/contact-request`)
+
+- **Translations** → Read `backend/ntm-backend.md`
+  - Translation usage info (`/translations/usage`)
+
+- **DCAT** → Read `backend/ntm-backend.md`
+  - DCAT-AP dataset endpoints (`/v1`)
+
+- **External Organizations** → Read `backend/ntm-tracker-backend.md`
+  - List and get external organizations
+
+- **External Categories** → Read `backend/ntm-tracker-backend.md`
+  - List and get external categories
 
 ### By Endpoint Pattern
 
 When working with specific endpoints:
 
-- `/api/publications/**` → `backend/ntm-backend.md`
-- `/api/data-publications/**` → `backend/ntm-backend.md`
-- `/api/organizations/**` → `backend/ntm-backend.md`
-- `/api/users/**` → `backend/ntm-backend.md`
-- `/api/notifications/**` → `backend/ntm-backend.md`
-- `/api/datasets/**` → `backend/ntm-tracker-backend.md`
-- `/api/tracker/**` → `backend/ntm-tracker-backend.md`
-- `/api/imports/**` → `backend/ntm-tracker-backend.md`
-
-**Note**: This mapping is incomplete. If you need comprehensive endpoint mapping, use the backend crawl prompt provided separately.
+- `/data-publications/**` → `backend/ntm-backend.md`
+- `/data-publications/import` → `backend/ntm-backend.md`
+- `/datasets` → `backend/ntm-backend.md` (listing only)
+- `/datasets/**` → `backend/ntm-tracker-backend.md` (import, reject, detail)
+- `/organizations/**` → `backend/ntm-backend.md`
+- `/repair/organizations/**` → `backend/ntm-backend.md`
+- `/users/**` → `backend/ntm-backend.md`
+- `/notifications/**` → `backend/ntm-backend.md`
+- `/subscriptions/**` → `backend/ntm-backend.md`
+- `/favorites/**` → `backend/ntm-backend.md`
+- `/regions/**` → `backend/ntm-backend.md`
+- `/standards/**` → `backend/ntm-backend.md`
+- `/data-regulations/**` → `backend/ntm-backend.md`
+- `/statistics/**` → `backend/ntm-backend.md`
+- `/export/**` → `backend/ntm-backend.md`
+- `/info-messages/**` → `backend/ntm-backend.md`
+- `/blobs/**` → `backend/ntm-backend.md`
+- `/contact-request` → `backend/ntm-backend.md`
+- `/translations/**` → `backend/ntm-backend.md`
+- `/v1/**` → `backend/ntm-backend.md` (DCAT-AP)
+- `/external-organizations/**` → `backend/ntm-tracker-backend.md`
+- `/external-categories/**` → `backend/ntm-tracker-backend.md`
 
 ---
 
