@@ -318,6 +318,57 @@ for (const option of this.options()) {              // Level 1
 }
 ```
 
+### typescript:S1192 — String literals should not be duplicated
+Do not duplicate string literals more than 2 times (i.e., the same literal appearing 3+ times). Duplicated strings make maintenance harder and are error-prone when values need to change.
+
+Fix: Extract the duplicated string into a named constant. If the string represents a type union member or specific value, create both a type and a constant.
+
+Exceptions: Short strings like empty strings `''`, single characters, or common tokens may not need extraction if they serve different semantic purposes.
+
+Example - WRONG (string duplicated 3 times):
+```typescript
+export class MyComponent {
+  columnLayout = input<'theme-date' | 'theme-date-menu' | 'theme-date-pill-owner-menu'>(
+    'theme-date-pill-owner-menu'  // Duplication 1
+  );
+
+  headerClass = computed(() => {
+    const layout = this.columnLayout();
+    return {
+      'header--theme-date': layout === 'theme-date',
+      'header--theme-date-pill-owner-menu': layout === 'theme-date-pill-owner-menu', // Duplication 2
+    };
+  });
+
+  showOwner = computed(() => {
+    return this.columnLayout() === 'theme-date-pill-owner-menu'; // Duplication 3 ❌
+  });
+}
+```
+
+Example - CORRECT (extracted constant):
+```typescript
+type ColumnLayout = 'theme-date' | 'theme-date-menu' | 'theme-date-pill-owner-menu';
+
+const DEFAULT_COLUMN_LAYOUT: ColumnLayout = 'theme-date-pill-owner-menu';
+
+export class MyComponent {
+  columnLayout = input<ColumnLayout>(DEFAULT_COLUMN_LAYOUT);
+
+  headerClass = computed(() => {
+    const layout = this.columnLayout();
+    return {
+      'header--theme-date': layout === 'theme-date',
+      'header--theme-date-pill-owner-menu': layout === DEFAULT_COLUMN_LAYOUT, // ✅
+    };
+  });
+
+  showOwner = computed(() => {
+    return this.columnLayout() === DEFAULT_COLUMN_LAYOUT; // ✅
+  });
+}
+```
+
 ### css:S4666 — Duplicate CSS selectors
 Do not declare the same selector twice in a stylesheet. This happens when layout overrides are split across modifier classes and parent-selector blocks that resolve to the same compiled selector.
 
