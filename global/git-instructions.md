@@ -248,6 +248,66 @@ Result: Create NEW commit (matching commit is too old, not directly below)
 Reasoning: Squashing into old commit could cause unexpected merge/conflict issues
 ```
 
+## PRE-PUSH VALIDATION - FRONTEND WORK ONLY
+
+**These rules apply ONLY to frontend project repositories (not .clinerules repo)**
+
+**BEFORE executing ANY `git push` command in a frontend repository:**
+
+1. **Check for WIP commits:**
+   - Run `git log origin/main..HEAD --oneline` to see all commits that will be pushed
+   - If ANY commit message starts with "WIP:", BLOCK the push
+   - Alert user: "Cannot push: WIP commits detected. Please squash WIP commits first."
+   - Do NOT execute the push command
+
+2. **Check for duplicate commits (one-commit-per-story rule):**
+   - Run `git log origin/main..HEAD --oneline` to see all commits that will be pushed
+   - Extract story/task IDs from commit messages (format: #[story-id] #[task-id])
+   - If MULTIPLE commits have the SAME story-id AND task-id, BLOCK the push
+   - Alert user: "Cannot push: Multiple commits detected for story #[story-id] task #[task-id]. Please squash commits to one commit per story/task."
+   - List the duplicate commits so user can see them
+   - Do NOT execute the push command
+
+3. **Only push if validation passes:**
+   - No WIP commits found
+   - No duplicate story/task IDs found
+   - Then execute `git push`
+
+**Examples (frontend repositories only):**
+
+```
+# BLOCKED - WIP commit detected
+$ git log origin/main..HEAD --oneline
+abc123 WIP: add zoom buttons
+def456 feat(map): #12345 #67890 add map controls
+
+Alert: "Cannot push: WIP commits detected. Please squash WIP commits first."
+```
+
+```
+# BLOCKED - Duplicate story/task IDs
+$ git log origin/main..HEAD --oneline
+abc123 feat(bootstrap-removal): #91306 #105855 inline template and styles into single-file component
+def456 feat(bootstrap-removal): #91306 #105854 replace multi select
+ghi789 feat(bootstrap-removal): #91306 #105854 update form controls
+
+Alert: "Cannot push: Multiple commits detected for story #91306 task #105854:
+- def456 feat(bootstrap-removal): #91306 #105854 replace multi select
+- ghi789 feat(bootstrap-removal): #91306 #105854 update form controls
+Please squash commits to one commit per story/task."
+```
+
+```
+# ALLOWED - One commit per story/task, no WIP commits
+$ git log origin/main..HEAD --online
+abc123 feat(bootstrap-removal): #91306 #105855 inline template and styles into single-file component
+def456 feat(bootstrap-removal): #91306 #105854 replace multi select
+
+Push proceeds: ✅
+```
+
+**Note:** These validation rules do NOT apply to .clinerules repository pushes, where multiple commits per push is normal and expected.
+
 ## GIT OPERATIONS - CRITICAL RULES
 
 NEVER stage files unless user explicitly requests it
@@ -263,7 +323,7 @@ NEVER push commits unless user explicitly requests it
 **CRITICAL: Each request is ONE-TIME ONLY**
 - If user says "stage these files", run ONLY `git add` then STOP
 - If user says "commit this", run ONLY `git commit` then STOP
-- If user says "push", run ONLY `git push` then STOP
+- If user says "push", run ONLY `git push` then STOP (but ONLY after pre-push validation passes for frontend repos)
 - DO NOT continue staging/committing/pushing in subsequent operations unless explicitly asked again
 - Each git operation requires fresh explicit permission
 - "Always allow" in settings does NOT mean "do this automatically forever"
