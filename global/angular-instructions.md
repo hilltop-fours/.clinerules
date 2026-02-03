@@ -27,9 +27,53 @@ SELF-CHECK — BEFORE finalising any added or edited code, verify that no legacy
 - `@Input()` → should be `input()`
 - `@Output()` with `new EventEmitter()` → should be `output()`
 - `@ViewChild()` → should be `viewChild()` (Angular 19+)
+- `@ViewChildren()` → should be `viewChildren()` (Angular 19+)
 - `@HostListener()` → should be `hostListener()` (Angular 19+)
 
 This check is needed because training data is dominated by the older decorator syntax. When in doubt, scan the file you just touched for any of these decorators and replace with the signal equivalent before finishing.
+
+CRITICAL — WHEN converting decorators to signals, UPDATE ALL REFERENCES:
+
+Converting decorators to signals changes how values are accessed. You MUST search for and update all usages:
+
+**@ViewChild / @ViewChildren conversions:**
+- Old (decorator): `this.myChild.someMethod()` or `this.children.forEach(...)`
+- New (signal): `this.myChild().someMethod()` or `this.children().forEach(...)`
+- Return type changes: `QueryList<T>` → `Signal<readonly T[]>`
+
+**@Input conversions:**
+- Old (decorator): `this.myInput` (direct property access)
+- New (signal): `this.myInput()` (function call)
+- Type changes: `T` → `InputSignal<T>`
+
+**Steps when converting:**
+1. Change the decorator to signal syntax
+2. Search the entire file for ALL references to that property name
+3. Update each reference to use `()` for signal access
+4. Update any type annotations (e.g., `QueryList<T>` → use signal return type)
+5. Test that the functionality still works
+
+Example - WRONG (forgot to update usage):
+```typescript
+// Converted declaration but forgot to update usage
+filterComponents = viewChildren(BaseFilterDirective);
+
+clearFilters() {
+  // ❌ WRONG: Missing () for signal access
+  this.filterComponents.forEach((filter) => filter.deselectAll());
+}
+```
+
+Example - CORRECT (updated both declaration and usage):
+```typescript
+// Converted to signal
+filterComponents = viewChildren(BaseFilterDirective);
+
+clearFilters() {
+  // ✅ CORRECT: Added () for signal access
+  this.filterComponents().forEach((filter) => filter.deselectAll());
+}
+```
 
 ## INDEX FILES - MANDATORY
 
