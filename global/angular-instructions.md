@@ -125,3 +125,41 @@ Before hardcoding string values:
 Example: Instead of hardcoding `'DEFINITIVE'`, find publication status model
 
 Purpose: Prevent duplication, centralize updates
+
+## DEAD CODE CLEANUP - MANDATORY
+
+AFTER any change that removes or replaces functionality, actively check for and remove code that is no longer used. Claude Code does not have IDE greying-out indicators, so this check must be done manually.
+
+ALWAYS check and remove when applicable:
+- **Inputs/outputs** on components or base classes that are no longer bound in any template
+- **Imports** in `.ts` files that are no longer referenced (both `import` statements and `imports: []` array entries)
+- **Methods and properties** on components/services that are no longer called
+- **Template bindings** (`[input]`, `(event)`) that reference removed inputs or methods
+- **SCSS classes** that are no longer used in any template
+- **Translation keys** in `nl.json` / `en.json` that are no longer referenced in templates or code
+
+HOW to check:
+1. After making changes, search the codebase for any remaining references to what was removed
+2. Pay special attention to base classes — removing an input from a child does not remove it from the parent
+3. Use barrel exports (`index.ts`) as a signal: if something is exported but never imported anywhere, it may be dead
+
+PURPOSE: Prevents accumulation of unreferenced code that is invisible without IDE feedback
+
+## SONARQUBE RULES - KNOWN ISSUES
+
+These SonarQube rules are actively enforced. When making changes, avoid triggering them.
+
+### typescript:S4202 — Do not use `any` type
+NEVER use `any`. Always define proper interfaces, types, or use generics. If data structure is unknown, use `unknown` and add type guards. See the TYPESCRIPT TYPING section above for examples.
+
+### css:S4666 — Duplicate CSS selectors
+Do not declare the same selector twice in a stylesheet. This happens when layout overrides are split across modifier classes and parent-selector blocks that resolve to the same compiled selector.
+
+Fix: Consolidate all rules for a selector into one place. If a modifier class already targets an element, do not also use a parent-selector (`&`) pattern to target the same element.
+
+### Web:S6853 — Form label must be associated with a control
+Labels must be associated with their input controls. Use either:
+- Explicit: `<label for="myId">` paired with `<input id="myId">`
+- Implicit: nest the `<input>` directly inside the `<label>`
+
+Note: This rule can produce false positives in Angular standalone components where Sonar cannot statically resolve `for`/`id` pairs. If the association is correct and Sonar still flags it, suppress on the Sonar server side rather than changing working code.
