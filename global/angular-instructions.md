@@ -102,6 +102,38 @@ Follow Angular file naming patterns:
 - Models: `*.model.ts`
 - Repositories: `*.repository.ts`
 
+## RXJS - NESTED SUBSCRIBES
+
+NEVER nest subscribes inside subscribes. This causes memory leaks, makes unsubscription unreliable, and complicates error handling.
+
+When the inner observable depends on a value from the outer observable, use a flattening operator instead:
+- `switchMap` — preferred default. Cancels the previous inner observable when a new outer value arrives. Use when only the latest result matters (e.g. fetching data based on a changing selection).
+- `exhaustMap` — ignores new outer values while the inner observable is still active.
+- `mergeMap` — does not cancel; runs all inner observables concurrently. Only use when you intentionally want parallel execution.
+
+Example - WRONG:
+```typescript
+this.form.controls.organizationId.valueChanges
+  .pipe(untilDestroyed(this))
+  .subscribe((organizationId) => {
+    this.repository.listUsers(organizationId)
+      .pipe(untilDestroyed(this))
+      .subscribe((users) => {
+        this.userList = users;
+      });
+  });
+```
+
+Example - CORRECT:
+```typescript
+this.form.controls.organizationId.valueChanges.pipe(
+  switchMap((organizationId) => this.repository.listUsers(organizationId)),
+  untilDestroyed(this)
+).subscribe((users) => {
+  this.userList = users;
+});
+```
+
 ## STATE MANAGEMENT
 
 State management: NgRx (ngrx)
