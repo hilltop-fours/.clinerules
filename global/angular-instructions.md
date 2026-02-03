@@ -192,6 +192,88 @@ These SonarQube rules are actively enforced. When making changes, avoid triggeri
 ### typescript:S4202 — Do not use `any` type
 NEVER use `any`. Always define proper interfaces, types, or use generics. If data structure is unknown, use `unknown` and add type guards. See the TYPESCRIPT TYPING section above for examples.
 
+### typescript:S109 — Magic numbers should not be used
+Do not use numeric literals directly in code. Extract them as named constants to improve readability and maintainability.
+
+Fix: Define constants with descriptive names at the file or component level.
+
+Exceptions: Common values like 0, 1, -1 are generally acceptable.
+
+Example - WRONG:
+```typescript
+export class MyComponent {
+  readonly showMoreAfter = input(3);  // ❌ What does 3 represent?
+  readonly maxItems = 10;             // ❌ Magic number
+
+  calculate(value: number) {
+    return value * 100;               // ❌ What does 100 represent?
+  }
+}
+```
+
+Example - CORRECT:
+```typescript
+const DEFAULT_SHOW_MORE_THRESHOLD = 3;
+const MAX_DISPLAY_ITEMS = 10;
+const PERCENTAGE_MULTIPLIER = 100;
+
+export class MyComponent {
+  readonly showMoreAfter = input(DEFAULT_SHOW_MORE_THRESHOLD);
+  readonly maxItems = MAX_DISPLAY_ITEMS;
+
+  calculate(value: number) {
+    return value * PERCENTAGE_MULTIPLIER;
+  }
+}
+```
+
+### typescript:S134 — Control flow statements should not be nested too deeply
+Do not nest more than 3 levels of `if`/`for`/`while`/`switch`/`try` statements. Deeply nested code is harder to read, test, and maintain.
+
+Fix: Extract nested logic into separate private methods. Each method should handle one level of the logic tree.
+
+Example - WRONG (4 levels of nesting):
+```typescript
+for (const option of this.options()) {              // Level 1
+  if (option.value === value) {                     // Level 2
+    return option;
+  }
+  if (option.children) {                            // Level 2
+    for (const child of option.children) {          // Level 3
+      if (child.value === value) {                  // Level 4 ❌ TOO DEEP
+        return child;
+      }
+    }
+  }
+}
+```
+
+Example - CORRECT (max 3 levels):
+```typescript
+for (const option of this.options()) {              // Level 1
+  if (option.value === value) {                     // Level 2
+    return option;
+  }
+  const childMatch = this.#findChild(option.children, value);  // Level 2
+  if (childMatch) {                                 // Level 2
+    return childMatch;
+  }
+}
+
+// Extract nested logic into separate method
+#findChild(children: Item[] | undefined, value: string): Item | null {
+  if (!children) {                                  // Level 1
+    return null;
+  }
+  for (const child of children) {                   // Level 1
+    if (child.value === value) {                    // Level 2
+      return child;
+    }
+  }
+  return null;
+}
+```
+
 ### css:S4666 — Duplicate CSS selectors
 Do not declare the same selector twice in a stylesheet. This happens when layout overrides are split across modifier classes and parent-selector blocks that resolve to the same compiled selector.
 
