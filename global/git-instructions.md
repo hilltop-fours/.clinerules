@@ -252,6 +252,16 @@ Reasoning: Squashing into old commit could cause unexpected merge/conflict issue
 
 **These rules apply ONLY to frontend project repositories (not .clinerules repo)**
 
+**ABSOLUTE RULE: ONE COMMIT PER PR**
+
+Each PR is identified by a unique story-id + task-id combination. There MUST be exactly ONE commit per PR when pushing. This rule overrides ALL other considerations including:
+- Different commit types (feat vs bug vs chore)
+- Different scopes
+- Different purposes (feature vs refactor vs fix)
+- Different files changed
+
+If multiple commits exist for the same story/task, they MUST be squashed into one commit before pushing.
+
 **BEFORE executing ANY `git push` command in a frontend repository:**
 
 1. **Check for WIP commits:**
@@ -259,18 +269,20 @@ Reasoning: Squashing into old commit could cause unexpected merge/conflict issue
    - If ANY commit message starts with "WIP:", BLOCK the push
    - Alert user: "Cannot push: WIP commits detected. Please squash WIP commits first."
    - Do NOT execute the push command
+   - NO EXCEPTIONS: WIP commits should only be pushed manually by the user, never by automation
 
-2. **Check for duplicate commits (one-commit-per-story rule):**
+2. **Check for duplicate commits (one-commit-per-PR rule):**
    - Run `git log origin/main..HEAD --oneline` to see all commits that will be pushed
    - Extract story/task IDs from commit messages (format: #[story-id] #[task-id])
    - If MULTIPLE commits have the SAME story-id AND task-id, BLOCK the push
    - Alert user: "Cannot push: Multiple commits detected for story #[story-id] task #[task-id]. Please squash commits to one commit per story/task."
-   - List the duplicate commits so user can see them
+   - List ALL duplicate commits so user can see them
    - Do NOT execute the push command
+   - This check applies REGARDLESS of commit type, scope, or description
 
 3. **Only push if validation passes:**
    - No WIP commits found
-   - No duplicate story/task IDs found
+   - No duplicate story/task IDs found (each unique story/task combination appears exactly once)
    - Then execute `git push`
 
 **Examples (frontend repositories only):**
@@ -285,9 +297,8 @@ Alert: "Cannot push: WIP commits detected. Please squash WIP commits first."
 ```
 
 ```
-# BLOCKED - Duplicate story/task IDs
+# BLOCKED - Duplicate story/task IDs (same type)
 $ git log origin/main..HEAD --oneline
-abc123 feat(bootstrap-removal): #91306 #105855 inline template and styles into single-file component
 def456 feat(bootstrap-removal): #91306 #105854 replace multi select
 ghi789 feat(bootstrap-removal): #91306 #105854 update form controls
 
@@ -298,10 +309,55 @@ Please squash commits to one commit per story/task."
 ```
 
 ```
+# BLOCKED - Duplicate story/task IDs (different types: feat + bug)
+$ git log origin/main..HEAD --oneline
+abc123 bug(publications): #106687 #108464 fix string literal duplication
+def456 feat(import): #106687 #108464 implement moderator datasets review
+
+Alert: "Cannot push: Multiple commits detected for story #106687 task #108464:
+- abc123 bug(publications): #106687 #108464 fix string literal duplication
+- def456 feat(import): #106687 #108464 implement moderator datasets review
+Please squash commits to one commit per story/task."
+```
+
+```
+# BLOCKED - Duplicate story/task IDs (different types: feat + chore)
+$ git log origin/main..HEAD --oneline
+abc123 feat(maps): #12345 #67890 add map controls
+def456 chore(maps): #12345 #67890 refactor map utilities
+
+Alert: "Cannot push: Multiple commits detected for story #12345 task #67890:
+- abc123 feat(maps): #12345 #67890 add map controls
+- def456 chore(maps): #12345 #67890 refactor map utilities
+Please squash commits to one commit per story/task."
+```
+
+```
+# BLOCKED - Duplicate story/task IDs (different scopes)
+$ git log origin/main..HEAD --oneline
+abc123 feat(api): #12345 #67890 add backend integration
+def456 feat(ui): #12345 #67890 add user interface
+
+Alert: "Cannot push: Multiple commits detected for story #12345 task #67890:
+- abc123 feat(api): #12345 #67890 add backend integration
+- def456 feat(ui): #12345 #67890 add user interface
+Please squash commits to one commit per story/task."
+```
+
+```
 # ALLOWED - One commit per story/task, no WIP commits
-$ git log origin/main..HEAD --online
+$ git log origin/main..HEAD --oneline
 abc123 feat(bootstrap-removal): #91306 #105855 inline template and styles into single-file component
 def456 feat(bootstrap-removal): #91306 #105854 replace multi select
+
+Push proceeds: ✅
+(Two different tasks: #105855 and #105854)
+```
+
+```
+# ALLOWED - Single commit for one story/task
+$ git log origin/main..HEAD --oneline
+abc123 feat(import): #106687 #108464 implement moderator datasets review
 
 Push proceeds: ✅
 ```
