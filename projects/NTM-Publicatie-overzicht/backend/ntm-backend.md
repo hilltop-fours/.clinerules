@@ -8,12 +8,12 @@ Complete reference for the NTM Backend API. This service manages data publicatio
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | N/A | 2026-01-30 |
-| Commit Message | From Swagger JSON | |
+| Last Verified Commit | a78215a | 2026-02-04 |
+| Commit Message | Feature #106687 Add create status flow for imported sets (no API changes) | |
 | Swagger Version | latest | 2026-01-30 |
 
-**Status**: ✓ Documented from OpenAPI spec as of 2026-01-30
-**Next Review**: Check repository commits
+**Status**: ✓ Up to date as of 2026-02-04
+**Next Review**: Check commits after a78215a
 
 ---
 
