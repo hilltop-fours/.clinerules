@@ -268,6 +268,54 @@ Example - CORRECT use of `||` (when you want falsy fallback):
 const displayText = user.bio || 'No bio provided';
 ```
 
+### Readonly for immutable values
+
+PREFER `readonly` for class properties that are assigned once and never change.
+
+Example - PREFERRED:
+```typescript
+readonly #router = inject(Router);
+readonly #twoMonthsAgo = subMonths(new Date(), 2);
+readonly ReviewStatusEnum = ReviewStatusEnum;
+```
+
+Example - WRONG:
+```typescript
+#router = inject(Router);           // ❌ Missing readonly
+twoMonthsAgo = subMonths(new Date(), 2);  // ❌ Missing readonly
+```
+
+### Private fields with # syntax
+
+PREFER the `#` prefix for private class members over the `private` keyword.
+
+Benefits:
+- True runtime privacy (not just TypeScript compile-time)
+- Cleaner syntax
+- Modern JavaScript standard
+
+Example - PREFERRED:
+```typescript
+readonly #router = inject(Router);
+readonly #twoMonthsAgo = subMonths(new Date(), 2);
+
+#calculateTotal() {
+  return this.items().reduce((sum, item) => sum + item.price, 0);
+}
+```
+
+Example - AVOID:
+```typescript
+private readonly router = inject(Router);      // ❌ Use # instead
+private readonly twoMonthsAgo = subMonths(new Date(), 2);
+
+private calculateTotal() {                      // ❌ Use # instead
+  return this.items().reduce((sum, item) => sum + item.price, 0);
+}
+```
+
+Note: For Angular lifecycle hooks and methods that need to be accessed by the framework or templates, keep them public (no modifier).
+
 ## RXJS - NESTED SUBSCRIBES
 
 NEVER nest subscribes inside subscribes. This causes memory leaks, makes unsubscription unreliable, and complicates error handling.
