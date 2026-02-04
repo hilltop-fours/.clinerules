@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-wkd-backend API. This service manages ve
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 2bdfa04b | 2026-01-28 |
-| Commit Message | Merged PR 115370: Feature #108771 Optimize pipeline | |
-| Swagger Version | latest | 2026-01-30 |
+| Last Verified Commit | eac7cbc | 2026-02-04 |
+| Commit Message | feat(speed-validation): #108353 Allow rounding errors in segment length | |
+| Swagger Version | latest | 2026-02-04 |
 
-**Status**: ✓ Up to date as of 2026-01-28
-**Next Review**: Check commits after 2bdfa04b
+**Status**: ✓ Up to date as of 2026-02-04
+**Next Review**: Check commits after eac7cbc
 
 ---
 
