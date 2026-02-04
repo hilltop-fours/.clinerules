@@ -23,6 +23,48 @@ DO NOT force signals when not needed:
 - Avoid `toSignal()` casting unless absolutely necessary
 - If signal refactoring is complex, note as potential future task instead of implementing
 
+**PREFER `computed()` over methods for derived values:**
+When a method or getter derives its value from signals and has no side effects, consider converting it to `computed()`.
+
+Benefits:
+- Memoization: recalculates only when dependencies change
+- Performance: avoids recalculation on every change detection cycle
+- Consistency: aligns with signal-based reactivity
+
+Example - WRONG (method recalculates every change detection):
+```typescript
+content = input<Publication>();
+readonly twoMonthsAgo = subMonths(new Date(), 2);
+
+isNew() {
+  const content = this.content();
+  if (!content?.createdOn) {
+    return false;
+  }
+  return new Date(content.createdOn) >= this.twoMonthsAgo;
+}
+```
+
+Example - CORRECT (computed with memoization):
+```typescript
+content = input<Publication>();
+readonly #twoMonthsAgo = subMonths(new Date(), 2);
+
+isNew = computed(() => {
+  const createdOn = this.content()?.createdOn;
+  return createdOn ? new Date(createdOn) >= this.#twoMonthsAgo : false;
+});
+```
+
+Example - Also CORRECT (computed for derived display values):
+```typescript
+// Instead of a method that formats every call
+getFullName = computed(() => `${this.firstName()} ${this.lastName()}`);
+
+// Instead of getter that checks permissions every call
+canEdit = computed(() => this.authService.hasPermission(this.content()));
+```
+
 SELF-CHECK — BEFORE finalising any added or edited code, verify that no legacy decorators slipped in:
 - `@Input()` → should be `input()`
 - `@Output()` with `new EventEmitter()` → should be `output()`
@@ -153,6 +195,78 @@ Follow Angular file naming patterns:
 - Services: `*.service.ts`
 - Models: `*.model.ts`
 - Repositories: `*.repository.ts`
+
+## CODE STYLE PREFERENCES
+
+These are preferences, not hard rules. Use judgment for readability.
+
+### Ternary operator for simple conditionals
+
+PREFER the ternary operator (`condition ? valueIfTrue : valueIfFalse`) for simple value assignments or returns.
+
+Example - PREFERRED (simple return):
+```typescript
+getStatusLabel(): string {
+  return this.isActive() ? 'Active' : 'Inactive';
+}
+```
+
+Example - PREFERRED (with nullish check):
+```typescript
+isNew = computed(() => {
+  const createdOn = this.content()?.createdOn;
+  return createdOn ? new Date(createdOn) >= this.threshold : false;
+});
+```
+
+Example - PREFERRED (assignment):
+```typescript
+const displayName = user.nickname ? user.nickname : user.fullName;
+```
+
+Example - AVOID ternary (complex logic):
+```typescript
+// ❌ Too complex for ternary
+const result = condition1 && condition2
+  ? this.complexOperation(value).transform()
+  : this.otherOperation(fallback).process();
+
+// ✅ Better as if/else
+if (condition1 && condition2) {
+  return this.complexOperation(value).transform();
+}
+return this.otherOperation(fallback).process();
+```
+
+### Nullish coalescing for default values
+
+PREFER nullish coalescing (`??`) over logical OR (`||`) when providing default values for potentially null/undefined values.
+
+Difference:
+- `??` returns right side only if left is `null` or `undefined`
+- `||` returns right side if left is any falsy value (`0`, `''`, `false`, `null`, `undefined`)
+
+Example - PREFERRED (nullish coalescing):
+```typescript
+// Only use default if value is null/undefined
+const count = inputCount ?? 0;           // preserves 0 if passed
+const name = user.name ?? 'Anonymous';   // preserves '' if intentionally empty
+const enabled = config.enabled ?? true;  // preserves false if set
+```
+
+Example - WRONG (loses valid falsy values):
+```typescript
+// ❌ These lose valid falsy values!
+const count = inputCount || 0;           // inputCount of 0 becomes 0 (ok by accident)
+const name = user.name || 'Anonymous';   // empty string '' becomes 'Anonymous'
+const enabled = config.enabled || true;  // false becomes true!
+```
+
+Example - CORRECT use of `||` (when you want falsy fallback):
+```typescript
+// ✅ Use || when empty string SHOULD trigger fallback
+const displayText = user.bio || 'No bio provided';
+```
 
 ## RXJS - NESTED SUBSCRIBES
 
