@@ -237,13 +237,20 @@ These SonarQube rules are actively enforced. When making changes, avoid triggeri
 NEVER use `any`. Always define proper interfaces, types, or use generics. If data structure is unknown, use `unknown` and add type guards. See the TYPESCRIPT TYPING section above for examples.
 
 ### typescript:S109 — Magic numbers should not be used
-Do not use numeric literals directly in code. Extract them as named constants to improve readability and maintainability.
+Do not use numeric literals directly in code when their meaning is unclear. Extract them as named constants to improve readability.
 
 Fix: Define constants with descriptive names at the file or component level.
 
 Exceptions: Common values like 0, 1, -1 are generally acceptable.
 
-Example - WRONG:
+**IMPORTANT**: This rule is about NUMBERS, not arrays or named values. Do NOT extract:
+- Arrays of enum values used once (e.g., `[StatusEnum.ACTIVE, StatusEnum.PENDING]`)
+- Named constants/enums that are already self-explanatory
+- Values that are only used in one place and are already readable
+
+The goal is readability. If a value is already self-explanatory (like named enum values), extracting it to a constant just adds indirection.
+
+Example - WRONG (magic numbers):
 ```typescript
 export class MyComponent {
   readonly showMoreAfter = input(3);  // ❌ What does 3 represent?
@@ -255,7 +262,7 @@ export class MyComponent {
 }
 ```
 
-Example - CORRECT:
+Example - CORRECT (extracted numbers):
 ```typescript
 const DEFAULT_SHOW_MORE_THRESHOLD = 3;
 const MAX_DISPLAY_ITEMS = 10;
@@ -269,6 +276,16 @@ export class MyComponent {
     return value * PERCENTAGE_MULTIPLIER;
   }
 }
+```
+
+Example - CORRECT (self-explanatory enum values, no extraction needed):
+```typescript
+// ✅ GOOD - enum values are already named and self-explanatory
+[ReviewStatusEnum.IMPORTED, ReviewStatusEnum.PENDING_REVIEW].map((status) => ...)
+
+// ❌ UNNECESSARY - adds indirection for no readability benefit
+const ALLOWED_STATUSES = [ReviewStatusEnum.IMPORTED, ReviewStatusEnum.PENDING_REVIEW];
+ALLOWED_STATUSES.map((status) => ...)
 ```
 
 ### typescript:S134 — Control flow statements should not be nested too deeply
