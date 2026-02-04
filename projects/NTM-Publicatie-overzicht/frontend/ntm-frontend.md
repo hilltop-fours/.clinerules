@@ -113,3 +113,78 @@ import { ComponentName } from '@shared/components/component-name';
 **Configuration files** (read-only unless explicitly asked to edit):
 - Can read: `package.json`, `angular.json`, `tsconfig.json`, etc.
 - Only edit if user explicitly requests: "update package.json", "add dependency X"
+
+---
+
+## PROJECT-SPECIFIC PATTERNS
+
+### Filter Components and Query Params
+
+**Pattern**: Filter components MUST subscribe to `route.queryParams` and reactively update their state when query params change.
+
+**Why**: This allows parent components (like `*-filters-aside`) to clear filters by simply updating the URL params. The filter components will automatically sync their UI state. This avoids tight coupling where parents need to manually call `deselectAll()` on child components.
+
+**CORRECT Pattern** (reactive):
+```typescript
+@UntilDestroy()
+@Component({
+  // ...
+  providers: [{ provide: BaseFilterDirective, useExisting: MyFilterComponent }],
+})
+export class MyFilterComponent extends BaseFilterDirective {
+  constructor() {
+    super();
+    this.queryParamName = QUERY_PARAMS.MY_FILTER;
+
+    // Subscribe to query param changes and update options reactively
+    this.route.queryParams.pipe(untilDestroyed(this)).subscribe((params) => {
+      const activeFilters = params[this.queryParamName]?.split(',') || [];
+      this.#updateOptions(activeFilters);
+    });
+  }
+
+  #updateOptions(activeFilters: string[]): void {
+    this.options.set(
+      FILTER_VALUES.map((value) => ({
+        labelPath: `TRANSLATIONS.${value}`,
+        value: value,
+        checked: activeFilters.includes(value),
+      }))
+    );
+    this.cdr.detectChanges();
+  }
+}
+```
+
+**INCORRECT Pattern** (one-time read):
+```typescript
+// ❌ DON'T DO THIS - Only reads params once on init, doesn't react to changes
+export class MyFilterComponent extends BaseFilterDirective implements OnInit {
+  ngOnInit(): void {
+    const activeFilters = this.getActiveFiltersFromQueryParams(); // snapshot only!
+    // ... populate options
+  }
+}
+```
+
+**Parent Component** (clearFilters):
+```typescript
+// ✅ CORRECT - Just update URL, child filters will react automatically
+clearFilters() {
+  this.#filtersService.updateUrlParams({
+    [QUERY_PARAMS.MY_FILTER]: null,
+  });
+}
+
+// ❌ INCORRECT - Manual coupling to child components
+clearFilters() {
+  this.#filtersService.updateUrlParams({ [QUERY_PARAMS.MY_FILTER]: null });
+  this.filterComponents().forEach((f) => f.deselectAll()); // Don't do this!
+}
+```
+
+**Reference Examples**:
+- Reactive: `data-import-filter-date.component.ts`, `search-input.component.ts`
+- Reactive: `publication-review-filter-status.component.ts` (updated)
+
+**Note**: Some older filter components in the codebase still use the incorrect pattern. When modifying these, consider refactoring to the reactive pattern.
