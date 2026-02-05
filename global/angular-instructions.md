@@ -553,6 +553,35 @@ Do not declare the same selector twice in a stylesheet. This happens when layout
 
 Fix: Consolidate all rules for a selector into one place. If a modifier class already targets an element, do not also use a parent-selector (`&`) pattern to target the same element.
 
+### typescript:S106 — Unexpected console statement
+Only these console methods are allowed: `assert`, `clear`, `count`, `group`, `groupCollapsed`, `groupEnd`, `info`, `table`, `time`, `timeEnd`, `trace`.
+
+Do NOT use: `log`, `warn`, `error`, `debug`.
+
+Fix: Remove the console statement or replace with an allowed method. For development warnings, use a comment instead. For production logging, use a proper logging service.
+
+Example - WRONG:
+```typescript
+if (!isValid) {
+  console.warn('Validation failed');  // ❌ warn is not allowed
+}
+```
+
+Example - CORRECT (comment):
+```typescript
+if (!isValid) {
+  // Validation failed - early return
+  return;
+}
+```
+
+Example - CORRECT (allowed method):
+```typescript
+if (!isValid) {
+  console.info('Validation failed');  // ✅ info is allowed
+}
+```
+
 ### Web:S6853 — Form label must be associated with a control
 Labels must be associated with their input controls. Use either:
 - Explicit: `<label for="myId">` paired with `<input id="myId">`
