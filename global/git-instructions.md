@@ -117,6 +117,14 @@ Rules:
 - Description: kebab-case
 - Story ID and Task ID: Obtained from project workflow (see WORKFLOW section)
 
+**CRITICAL: Never commit work onto an existing feature branch that belongs to a different story/task.**
+Each story/task gets its own branch. If you are currently on `feature/A/B/some-feature` and the user starts work on story C / task D, you MUST:
+1. Checkout `main`
+2. Create a new branch: `feature/C/D/description`
+3. Do all work there
+
+Committing onto the wrong branch requires force-pushing to undo, which disrupts remote history. Always verify the current branch's story/task IDs match the work being done before committing.
+
 Example: `bug/106187/108922/fix-verkeersbesluit-id-uppercase-validation`
 
 ## WORKFLOW - AZURE DEVOPS INTEGRATION
@@ -280,9 +288,18 @@ If multiple commits exist for the same story/task, they MUST be squashed into on
    - Do NOT execute the push command
    - This check applies REGARDLESS of commit type, scope, or description
 
-3. **Only push if validation passes:**
+3. **Check branch name matches commit story/task IDs:**
+   - Extract story-id and task-id from the current branch name (format: `type/[story-id]/[task-id]/description`)
+   - Extract story-id and task-id from the commit messages being pushed
+   - If ANY commit contains story/task IDs that do NOT match the branch name, BLOCK the push
+   - Alert user: "Cannot push: commit #[story-id] #[task-id] does not match branch [branch-name]. The commit belongs on a different branch."
+   - This prevents accidentally pushing work for story A onto story B's branch
+   - Do NOT execute the push command
+
+4. **Only push if validation passes:**
    - No WIP commits found
    - No duplicate story/task IDs found (each unique story/task combination appears exactly once)
+   - All commit story/task IDs match the branch name
    - Then execute `git push`
 
 **Examples (frontend repositories only):**
@@ -360,6 +377,29 @@ $ git log origin/main..HEAD --oneline
 abc123 feat(import): #106687 #108464 implement moderator datasets review
 
 Push proceeds: ✅
+```
+
+```
+# BLOCKED - Commit story/task IDs do not match branch name
+$ git branch --show-current
+feature/106687/108464/moderator-datasets
+$ git log origin/main..HEAD --oneline
+850c4cc6 feat(form-accessibility): #108710 #109367 implement wcag 3.3.1 compliant form error handling
+d68418d1 feat(import): #106687 #108464 implement moderator datasets review
+
+Alert: "Cannot push: commit #108710 #109367 does not match branch feature/106687/108464/moderator-datasets.
+The commit belongs on a different branch. Create feature/108710/109367/... from main first."
+```
+
+```
+# ALLOWED - Commit story/task IDs match branch name
+$ git branch --show-current
+feature/108710/109367/wcag-form-accessibility
+$ git log origin/main..HEAD --oneline
+aa0d9394 feat(form-accessibility): #108710 #109367 implement wcag 3.3.1 compliant form error handling
+
+Push proceeds: ✅
+(Branch and commit both belong to story #108710, task #109367)
 ```
 
 **Note:** These validation rules do NOT apply to .clinerules repository pushes, where multiple commits per push is normal and expected.
