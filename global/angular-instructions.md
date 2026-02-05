@@ -70,6 +70,8 @@ SELF-CHECK — BEFORE finalising any added or edited code, verify that no legacy
 - `@Output()` with `new EventEmitter()` → should be `output()`
 - `@ViewChild()` → should be `viewChild()` (Angular 19+)
 - `@ViewChildren()` → should be `viewChildren()` (Angular 19+)
+- `@ContentChild()` → should be `contentChild()` (Angular 19+)
+- `@ContentChildren()` → should be `contentChildren()` (Angular 19+)
 - `@HostListener()` → should be `hostListener()` (Angular 19+)
 
 This check is needed because training data is dominated by the older decorator syntax. When in doubt, scan the file you just touched for any of these decorators and replace with the signal equivalent before finishing.
@@ -78,10 +80,10 @@ CRITICAL — WHEN converting decorators to signals, UPDATE ALL REFERENCES:
 
 Converting decorators to signals changes how values are accessed. You MUST search for and update all usages:
 
-**@ViewChild / @ViewChildren conversions:**
+**@ViewChild / @ViewChildren / @ContentChild / @ContentChildren conversions:**
 - Old (decorator): `this.myChild.someMethod()` or `this.children.forEach(...)`
 - New (signal): `this.myChild().someMethod()` or `this.children().forEach(...)`
-- Return type changes: `QueryList<T>` → `Signal<readonly T[]>`
+- Return type changes: `QueryList<T>` → `Signal<readonly T[]>` for children queries
 
 **@Input conversions:**
 - Old (decorator): `this.myInput` (direct property access)
