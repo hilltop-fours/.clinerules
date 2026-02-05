@@ -143,10 +143,38 @@ NTM-Publicatie-overzicht/
         ├── project-instructions.md ← You are here
         ├── frontend/
         │   └── ntm-frontend.md
-        └── backend/
-            ├── ntm-backend.md
-            └── ntm-tracker-backend.md
+        ├── backend/
+        │   ├── ntm-backend.md
+        │   └── ntm-tracker-backend.md
+        └── patterns/               ← Implementation patterns
+            ├── form-accessibility.md
+            └── query-params.md
 ```
+
+---
+
+## PATTERN DOCUMENTATION
+
+NTM uses specific patterns for recurring implementation scenarios. Each pattern is documented in its own focused file:
+
+**WHEN working with accessible forms (WCAG 3.3.1 compliance)**:
+→ Read `patterns/form-accessibility.md`
+- Error message formatting
+- ARIA live regions & aria-invalid attributes
+- Focus management
+- Required field indicators
+- Visual differentiation (non-color based)
+- Form validation implementation
+- Testing checklists
+
+**WHEN working with query parameters for routing, filtering, or deep linking**:
+→ Read `patterns/query-params.md`
+- Feature-specific deep linking
+- Navigation state preservation
+- Pagination patterns
+- Filtering & search
+- Security considerations
+- Testing approaches
 
 ---
 
