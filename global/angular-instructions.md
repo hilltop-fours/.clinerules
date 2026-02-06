@@ -584,6 +584,35 @@ if (!isValid) {
 }
 ```
 
+### typescript:S121 — Control structures should use curly braces
+All control flow statements (`if`, `else`, `for`, `while`, `switch`, `do-while`) MUST be enclosed in curly braces, even if the body contains only a single statement.
+
+Fix: Add curly braces around all single-statement blocks.
+
+Example - WRONG (missing braces):
+```typescript
+if (condition) return value;          // ❌ Missing braces
+if (isValid) doSomething();           // ❌ Missing braces
+for (let i = 0; i < 10; i++) total++; // ❌ Missing braces
+```
+
+Example - CORRECT (with braces):
+```typescript
+if (condition) {
+  return value;  // ✅ Braces on single statement
+}
+
+if (isValid) {
+  doSomething();
+}
+
+for (let i = 0; i < 10; i++) {
+  total++;
+}
+```
+
+Rationale: This prevents errors when code is later modified and improves code clarity and consistency.
+
 ### Web:S6853 — Form label must be associated with a control
 Labels must be associated with their input controls. Use either:
 - Explicit: `<label for="myId">` paired with `<input id="myId">`
