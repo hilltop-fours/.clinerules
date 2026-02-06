@@ -584,6 +584,40 @@ if (!isValid) {
 }
 ```
 
+### typescript:S1128 — Remove unused imports
+Remove any import statements that are not used in the code. Unused imports add unnecessary clutter and increase bundle size.
+
+Fix: Delete the unused import statement completely.
+
+Example - WRONG (ElementRef imported but never used):
+```typescript
+import {
+  Component,
+  ElementRef,  // ❌ Unused
+  inject,
+} from '@angular/core';
+
+@Component({...})
+export class MyComponent {
+  readonly #router = inject(Router);
+}
+```
+
+Example - CORRECT (only used imports):
+```typescript
+import {
+  Component,
+  inject,
+} from '@angular/core';
+
+@Component({...})
+export class MyComponent {
+  readonly #router = inject(Router);
+}
+```
+
+This is caught automatically by Sonar and ESLint. Always review your imports after refactoring to ensure all are still needed.
+
 ### typescript:S121 — Control structures should use curly braces
 All control flow statements (`if`, `else`, `for`, `while`, `switch`, `do-while`) MUST be enclosed in curly braces, even if the body contains only a single statement.
 
