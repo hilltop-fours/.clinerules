@@ -741,6 +741,31 @@ const isInvalid = control.invalid && hasUserInteracted;
 
 Always ensure variable names are unique within their scope to avoid shadowing and confusion.
 
+### Web:S6811 — Ensure aria-required is applied to the correct element
+The `aria-required` attribute is not supported on certain input types like radio buttons and checkboxes. Instead, place `aria-required="true"` on the parent `fieldset` or a wrapper element that groups the radio/checkbox controls together.
+
+Fix: Move `aria-required` from individual radio/checkbox inputs to their parent `fieldset`.
+
+Example - WRONG (aria-required on individual radio buttons):
+```html
+<fieldset>
+  <legend>Choose an option</legend>
+  <input type="radio" name="choice" value="1" aria-required="true" />  <!-- ❌ Wrong -->
+  <input type="radio" name="choice" value="2" aria-required="true" />  <!-- ❌ Wrong -->
+</fieldset>
+```
+
+Example - CORRECT (aria-required on fieldset):
+```html
+<fieldset aria-required="true">  <!-- ✅ Correct -->
+  <legend>Choose an option</legend>
+  <input type="radio" name="choice" value="1" />
+  <input type="radio" name="choice" value="2" />
+</fieldset>
+```
+
+Rationale: Radio buttons and checkboxes inherit their role implicitly, so ARIA attributes like `aria-required` should be placed on the grouping element (fieldset) rather than individual inputs.
+
 ### Web:S6853 — Form label must be associated with a control
 Labels must be associated with their input controls. Use either:
 - Explicit: `<label for="myId">` paired with `<input id="myId">`
