@@ -647,6 +647,59 @@ for (let i = 0; i < 10; i++) {
 
 Rationale: This prevents errors when code is later modified and improves code clarity and consistency.
 
+### typescript:S1117 — Variable declared multiple times in same scope
+Do not declare a variable with the same name in overlapping scopes. This causes confusion and can lead to bugs where the wrong variable is referenced.
+
+Fix: Rename one of the duplicate variables to have a unique name within its scope.
+
+Example - WRONG (variable declared twice):
+```typescript
+import { input } from '@angular/core';  // ❌ 'input' imported
+
+#getInputElement() {
+  const input = this.inputElement();    // ❌ 'input' redeclared locally
+  if (input) {
+    return input.nativeElement;
+  }
+}
+```
+
+Example - CORRECT (unique variable names):
+```typescript
+import { input } from '@angular/core';  // ✅ 'input' imported
+
+#getInputElement() {
+  const inputElement = this.inputElement();  // ✅ Different name
+  if (inputElement) {
+    return inputElement.nativeElement;
+  }
+}
+```
+
+Example - WRONG (same variable in overlapping scopes):
+```typescript
+control.statusChanges.subscribe(() => {
+  const hasUserInteracted = control.touched || !control.pristine;  // ❌ First declaration
+  const isInvalid = control.invalid && hasUserInteracted;
+});
+
+const hasUserInteracted = control.touched || !control.pristine;    // ❌ Second declaration (conflict!)
+const isInvalid = control.invalid && hasUserInteracted;
+```
+
+Example - CORRECT (unique names in different scopes):
+```typescript
+control.statusChanges.subscribe(() => {
+  const userInteracted = control.touched || !control.pristine;     // ✅ Renamed
+  const invalid = control.invalid && userInteracted;
+});
+
+const hasUserInteracted = control.touched || !control.pristine;    // ✅ Different names
+const isInvalid = control.invalid && hasUserInteracted;
+```
+
+Always ensure variable names are unique within their scope to avoid shadowing and confusion.
+
 ### Web:S6853 — Form label must be associated with a control
 Labels must be associated with their input controls. Use either:
 - Explicit: `<label for="myId">` paired with `<input id="myId">`
