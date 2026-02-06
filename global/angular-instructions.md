@@ -618,6 +618,47 @@ export class MyComponent {
 
 This is caught automatically by Sonar and ESLint. Always review your imports after refactoring to ensure all are still needed.
 
+### typescript:S1066 — Merge duplicate or unnecessary nested if statements
+When an if statement is nested directly inside another if statement with no other code between them, merge the conditions using logical operators (&&, ||) to simplify the code.
+
+Fix: Combine the conditions into a single if statement.
+
+Example - WRONG (unnecessary nesting):
+```typescript
+if (stepIndex === 2) {
+  if (this.selectedRole === RoleEnum.EDITOR) {    // ❌ Unnecessary nesting
+    this.resetFields();
+  }
+}
+```
+
+Example - CORRECT (merged conditions):
+```typescript
+if (stepIndex === 2 && this.selectedRole === RoleEnum.EDITOR) {  // ✅ Combined
+  this.resetFields();
+}
+```
+
+Example - WRONG (multiple nested conditions):
+```typescript
+if (isValid) {
+  if (isUser || isAdmin) {              // ❌ Nested without other logic
+    if (hasPermission) {                // ❌ More unnecessary nesting
+      processRequest();
+    }
+  }
+}
+```
+
+Example - CORRECT (all merged):
+```typescript
+if (isValid && (isUser || isAdmin) && hasPermission) {  // ✅ Single condition
+  processRequest();
+}
+```
+
+Rationale: Merging nested if statements reduces indentation depth and improves code readability.
+
 ### typescript:S121 — Control structures should use curly braces
 All control flow statements (`if`, `else`, `for`, `while`, `switch`, `do-while`) MUST be enclosed in curly braces, even if the body contains only a single statement.
 
