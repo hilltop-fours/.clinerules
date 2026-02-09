@@ -1,24 +1,12 @@
 # NTM PUBLICATIE OVERZICHT - PROJECT INSTRUCTIONS
 
-## PROJECT IDENTIFICATION
+**Project**: NTM Publicatie Overzicht
+**Working directory path contains**: `/NTM-Publicatie-overzicht`
+**Frontend repository**: `ntm-frontend/` (edit in `/src/**` only)
+**Backend services**: `ntm-backend`, `ntm-tracker-backend` (reference only)
+**Design system**: `ndw-design/` (reference only)
 
-Working directory path contains: `/NTM-Publicatie-overzicht`
-
-## REPOSITORY LOCATIONS
-
-### Frontend
-- **Path**: `/Users/daniel/Developer/NTM-Publicatie-overzicht/ntm-frontend/`
-- **Git operations**: ALL git commands (checkout, add, commit, push, status, branch, etc.) MUST execute from this directory
-- **Editable**: YES - Only edit files in `/ntm-frontend/src/**`
-
-### Backend Services (Reference Only - Never Edit)
-- **ntm-backend**: `/Users/daniel/Developer/NTM-Publicatie-overzicht/ntm-backend/`
-- **ntm-tracker-backend**: `/Users/daniel/Developer/NTM-Publicatie-overzicht/ntm-tracker-backend/`
-
-### Design System (Reference Only - Never Edit)
-- **Path**: `/Users/daniel/Developer/NTM-Publicatie-overzicht/ndw-design/`
-
-**CRITICAL**: Project root `/Users/daniel/Developer/NTM-Publicatie-overzicht` is NOT a git repository. Git commands will fail if executed there.
+**For repository locations and structure overview**: Read `README.md` in this folder
 
 ---
 
@@ -127,31 +115,6 @@ When working with specific endpoints:
 - `/external-organizations/**` → `backend/ntm-tracker-backend.md`
 - `/external-categories/**` → `backend/ntm-tracker-backend.md`
 
----
-
-## MONOREPO STRUCTURE
-
-```
-NTM-Publicatie-overzicht/
-├── ntm-frontend/                   ← EDIT ONLY THIS (in /src/ subdirectory)
-│   └── src/                        ← All edits happen here
-├── ntm-backend/                    ← Reference only
-├── ntm-tracker-backend/            ← Reference only
-├── ndw-design/                     ← Reference only
-└── .clinerules/                    ← Editable (documentation only)
-    └── projects/NTM-Publicatie-overzicht/
-        ├── project-instructions.md ← You are here
-        ├── frontend/
-        │   └── ntm-frontend.md
-        ├── backend/
-        │   ├── ntm-backend.md
-        │   └── ntm-tracker-backend.md
-        └── patterns/               ← Implementation patterns
-            ├── form-accessibility.md
-            └── query-params.md
-```
-
----
 
 ## PATTERN DOCUMENTATION
 

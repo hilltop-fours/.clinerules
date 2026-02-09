@@ -35,7 +35,8 @@ Quick overview of `.clinerules/` organization:
 
 - `projects/` - Project-specific configurations
   - `{PROJECT-NAME}/`
-    - `project-instructions.md` - Project setup, paths, and backend mapping
+    - `README.md` - Project structure, repository locations, editing boundaries (reference)
+    - `project-instructions.md` - Task-based rules, backend API mapping, patterns
     - `patterns/` - Project-specific code patterns and conventions (optional)
     - `frontend/` - Frontend-specific coding rules for this project
       - `{repo-name}.md` - Component structure, naming, style patterns
@@ -68,6 +69,7 @@ Check your current working directory path and match it against these patterns:
 
 **BEFORE any git operation** (commit, branch, push, pull, status, checkout):
 → Read `.clinerules/global/git-instructions.md`
+→ **CRITICAL FOR .CLINERULES COMMITS**: Single line only, `type(scope): description` format, separate commits per scope (see git-instructions.md SPECIAL CASE section)
 
 **BEFORE editing ANY code** (components, services, templates, styles):
 → Read `.clinerules/global/angular-instructions.md`
