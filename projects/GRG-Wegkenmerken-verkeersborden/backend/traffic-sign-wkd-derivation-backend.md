@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-wkd-derivation-backend API. This service
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 76d64c5 | 2026-01-27 |
-| Commit Message | Feature #108771 Optimize pipeline | |
-| Swagger Version | latest | 2026-01-30 |
+| Last Verified Commit | a3eafec | 2026-02-10 |
+| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
+| Swagger Version | latest | 2026-02-10 |
 
-**Status**: ✓ Up to date as of 2026-01-27
-**Next Review**: Check commits after 76d64c5
+**Status**: ✓ Up to date as of 2026-02-10
+**Next Review**: Check commits after a3eafec
 
 ---
 

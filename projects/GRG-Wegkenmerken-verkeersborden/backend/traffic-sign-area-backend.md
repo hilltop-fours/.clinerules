@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-area-backend API. This service handles a
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | d6fb302b | 2026-01-27 |
-| Commit Message | Feature #108771 Optimize pipeline | |
-| Swagger Version | latest | 2026-01-30 |
+| Last Verified Commit | 4789469 | 2026-02-10 |
+| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
+| Swagger Version | latest | 2026-02-10 |
 
-**Status**: ✓ Up to date as of 2026-01-27
-**Next Review**: Check commits after d6fb302b
+**Status**: ✓ Up to date as of 2026-02-10
+**Next Review**: Check commits after 4789469
 
 ---
 

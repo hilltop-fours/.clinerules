@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-wkd-backend API. This service manages ve
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | eac7cbc | 2026-02-04 |
-| Commit Message | feat(speed-validation): #108353 Allow rounding errors in segment length | |
-| Swagger Version | latest | 2026-02-04 |
+| Last Verified Commit | 6768721 | 2026-02-10 |
+| Commit Message | Feature #89803 Send driving direction and BST to NLS (no API changes) | |
+| Swagger Version | latest | 2026-02-10 |
 
-**Status**: ✓ Up to date as of 2026-02-04
-**Next Review**: Check commits after eac7cbc
+**Status**: ✓ Up to date as of 2026-02-10
+**Next Review**: Check commits after 6768721
 
 ---
 

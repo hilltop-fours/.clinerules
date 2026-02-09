@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-inspection-backend API. This service han
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | cca12c5 | 2026-02-03 |
-| Commit Message | feat(inspection): #109066 Request only open issues | |
-| Swagger Version | latest | 2026-02-03 |
+| Last Verified Commit | d2bd608 | 2026-02-10 |
+| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
+| Swagger Version | latest | 2026-02-10 |
 
-**Status**: ✓ Up to date as of 2026-02-03
-**Next Review**: Check commits after cca12c5
+**Status**: ✓ Up to date as of 2026-02-10
+**Next Review**: Check commits after d2bd608
 
 ---
 

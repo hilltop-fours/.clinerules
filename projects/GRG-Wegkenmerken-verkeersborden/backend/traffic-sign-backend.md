@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 46ecff61 | 2026-02-03 |
-| Commit Message | feat(findings): #108675 Fix duplicate filter | |
-| Swagger Version | latest | 2026-02-03 |
+| Last Verified Commit | ccf2627e | 2026-02-10 |
+| Commit Message | Feature #109403 Update new user email (no API changes) | |
+| Swagger Version | latest | 2026-02-10 |
 
-**Status**: ✓ Up to date as of 2026-02-03
-**Next Review**: Check commits after 46ecff61
+**Status**: ✓ Up to date as of 2026-02-10
+**Next Review**: Check commits after ccf2627e
 
 ---
 
