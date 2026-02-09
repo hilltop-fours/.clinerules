@@ -320,6 +320,41 @@ Example - AVOID (directives):
 
 Reference: [Angular bindings guide](https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings)
 
+### Event handler naming - describe the action, not the event
+
+PREFER naming event handlers for the action they perform rather than the triggering event.
+
+This makes it immediately clear what an event does from reading the template, rather than requiring you to find the handler implementation.
+
+Example - PREFERRED (action-based names):
+```html
+<button (click)="saveUserData()">Save</button>
+<textarea (keydown.control.enter)="commitNotes()" (keydown.control.space)="showSuggestions()"></textarea>
+```
+
+Example - AVOID (event-based names):
+```html
+<button (click)="handleClick()">Save</button>
+<textarea (keydown)="handleKeydown($event)"></textarea>
+```
+
+**Exception - Complex event handling:**
+
+When event handling logic is especially long or complex, it's acceptable to use a generic handler name and delegate to more specific behaviors based on the event details:
+
+```typescript
+// Acceptable when the handler contains complex conditional logic
+handleKeydown(event: KeyboardEvent) {
+  if (event.ctrlKey && event.key === 'Enter') {
+    this.commitNotes();
+  } else if (event.ctrlKey && event.key === ' ') {
+    this.showSuggestions();
+  }
+}
+```
+
+Reference: [Angular event binding guide](https://angular.dev/guide/templates/event-binding)
+
 ### Private fields with # syntax
 
 PREFER the `#` prefix for private class members over the `private` keyword.
