@@ -106,6 +106,28 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 **IF confused about backend API documentation format**:
 → Read `$CLINERULES_ROOT/global/backend-api-format.md` (reference only)
 
+**WHEN user asks to validate code** (validate, review, check code quality):
+→ Read validation files:
+  - `$CLINERULES_ROOT/validation/angular-style.md` - Code style preferences
+  - `$CLINERULES_ROOT/validation/angular-class-structure.md` - Class organization
+  - `$CLINERULES_ROOT/validation/sonarqube-rules.md` - SonarQube violations
+→ Execute validation checks:
+  - Run `npm run build` from frontend directory (check compilation errors)
+  - Run `npm run lint` (check ESLint violations)
+  - Use `git diff main...HEAD --name-only` to identify all changed files in branch
+→ Review all changes against:
+  - Angular best practices from `global/angular-instructions.md`
+  - Project patterns and requirements from `project-instructions.md`
+  - Validation rules from all `validation/*.md` files
+  - Frontend-specific rules from `frontend/{repo-name}.md`
+→ Generate validation report with:
+  - Build & lint status (pass/fail)
+  - Files changed with summary
+  - Code quality findings organized by category
+  - Violations with severity levels
+  - Actionable recommendations for fixes
+  - **Note**: If issues found, present findings only (no automatic fixes unless explicitly requested)
+
 ---
 
 ## FILE TYPE RESTRICTIONS - FRONTEND ONLY
