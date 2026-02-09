@@ -1,5 +1,25 @@
 # CLAUDE CODE - INSTRUCTIONS
 
+## ⚠️ PURPOSE - READ FIRST
+
+**Everything in this `.clinerules/` repository is written EXCLUSIVELY for Claude Code.**
+
+This is not human documentation. Every file, every structure, every detail exists for one purpose only:
+- **For Claude to read and understand**
+- **For Claude to make better decisions**
+- **For Claude to write better code**
+- **For Claude to locate information quickly**
+
+When creating or editing files in `.clinerules/`:
+- Optimize for Claude's comprehension, not human readability
+- Structure for Claude's navigation patterns
+- Write explanations for Claude's task-based reading
+- Format files so Claude can find and apply the rules efficiently
+
+The user should never need to read this. If the user needs information, Claude reads it and explains. If the user needs to change something, they ask Claude to edit it.
+
+---
+
 ## FOLDER STRUCTURE REFERENCE
 
 Quick overview of `.clinerules/` organization:
