@@ -287,6 +287,39 @@ Example - WRONG:
 twoMonthsAgo = subMonths(new Date(), 2);  // ❌ Missing readonly
 ```
 
+### Class and style bindings over directives
+
+PREFER built-in `[class]` and `[style]` bindings over `ngClass` and `ngStyle` directives.
+
+Benefits:
+- More straightforward syntax aligned with standard HTML attributes
+- Better performance (no directive overhead)
+- Easier to read and understand
+
+Example - PREFERRED (individual properties):
+```html
+<div [class.admin]="isAdmin" [class.dense]="density === 'high'">
+  <div [style.color]="textColor" [style.background-color]="backgroundColor">
+  </div>
+</div>
+```
+
+Example - PREFERRED (object syntax):
+```html
+<div [class]="{admin: isAdmin, dense: density === 'high'}">
+  <div [style]="{'color': textColor, 'background-color': backgroundColor}"></div>
+</div>
+```
+
+Example - AVOID (directives):
+```html
+<div [ngClass]="{admin: isAdmin, dense: density === 'high'}">
+  <div [ngStyle]="{'color': textColor, 'background-color': backgroundColor}"></div>
+</div>
+```
+
+Reference: [Angular bindings guide](https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings)
+
 ### Private fields with # syntax
 
 PREFER the `#` prefix for private class members over the `private` keyword.
