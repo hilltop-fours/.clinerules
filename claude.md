@@ -104,8 +104,17 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 ## READ RULES ON-DEMAND
 
 **BEFORE any git operation** (commit, branch, push, pull, status, checkout):
-→ Read `$CLINERULES_ROOT/global/git-instructions.md`
+→ **ALWAYS** read `$CLINERULES_ROOT/global/git-instructions.md` first — no exceptions, even if read earlier in the session
 → **CRITICAL FOR .CLINERULES COMMITS**: Single line only, `type(scope): description` format, separate commits per scope (see git-instructions.md SPECIAL CASE section)
+
+**WHEN user says "commit this" / "commit" / "stage and commit"** (without specifying a repo):
+→ Read `$CLINERULES_ROOT/global/git-instructions.md` first
+→ Check BOTH repositories for uncommitted changes:
+  1. Run `git status --short` in `.clinerules/` directory
+  2. Run `git status --short` in `{project-prefix}-frontend/` directory
+→ Commit changes in whichever repo(s) have them
+→ If both repos have changes, commit each repo separately following git-instructions rules
+→ If user specifies a repo (e.g., "commit the frontend changes"), only commit that repo
 
 **BEFORE editing ANY code** (components, services, templates, styles):
 → Read `$CLINERULES_ROOT/global/angular-instructions.md`
