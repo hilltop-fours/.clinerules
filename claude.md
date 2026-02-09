@@ -1,5 +1,31 @@
 # CLAUDE CODE - INSTRUCTIONS
 
+## FOLDER STRUCTURE REFERENCE
+
+Quick overview of `.clinerules/` organization:
+
+- `global/` - Shared rules for all projects
+  - `git-instructions.md` - Git workflow, commit messages, branch naming, pushing
+  - `angular-instructions.md` - Angular coding standards and patterns
+  - `update-backend-api-instructions.md` - How to update backend documentation
+  - `backend-api-format.md` - Format reference for backend API documentation
+
+- `validation/` - Detailed validation and style enforcement rules
+  - `angular-*.md` - Specific Angular style and validation rules
+
+- `projects/` - Project-specific configurations
+  - `{PROJECT-NAME}/`
+    - `project-instructions.md` - Project setup, paths, and backend mapping
+    - `patterns/` - Project-specific code patterns and conventions (optional)
+    - `frontend/` - Frontend-specific coding rules for this project
+      - `{repo-name}.md` - Component structure, naming, style patterns
+    - `backend/` - Backend API documentation for this project
+      - `{backend-name}.md` - API endpoints, models, request/response formats
+
+- `claude.md` - This file (Claude Code instructions and task rules)
+
+---
+
 ## PROJECT IDENTIFICATION
 
 Check your current working directory path and match it against these patterns:
