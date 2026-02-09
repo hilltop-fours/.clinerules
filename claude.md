@@ -25,6 +25,7 @@ Check your current working directory path and match it against these patterns:
 
 **BEFORE editing ANY code** (components, services, templates, styles):
 → Read `.clinerules/global/angular-instructions.md`
+→ Reference `.clinerules/validation/angular-*.md` files for detailed style and validation rules
 
 **WHEN user asks to update backend API docs**:
 → Read `.clinerules/global/update-backend-api-instructions.md`
@@ -96,7 +97,7 @@ All **frontend projects** use ONLY these file types:
 2. **Read `project-instructions.md`** for that project
 3. **Based on task**, read additional files:
    - Git operation → Read `global/git-instructions.md`
-   - Code editing → Read `global/angular-instructions.md` + `frontend/{repo}.md`
+   - Code editing → Read `global/angular-instructions.md` + validation files (`validation/angular-*.md`) + `frontend/{repo}.md`
    - Backend API work → Read appropriate backend `.md` file
    - Update backend docs → Read `global/update-backend-api-instructions.md`
 4. **Apply all rules** from the files you read to every action

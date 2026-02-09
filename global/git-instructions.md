@@ -60,7 +60,7 @@ Rules:
 
 Scope naming:
 - Single file edits: Use `folder/filename` pattern
-  - Examples: `global/git-instructions`, `global/angular-instructions`, `global/backend-api-format`
+  - Examples: `global/git-instructions`, `global/angular-instructions`, `validation/angular-style`, `global/backend-api-format`
   - For project files: `projects/PROJECT-NAME/filename`
   - For backend docs: `projects/PROJECT-NAME/backend/BACKEND-NAME`
 
