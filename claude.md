@@ -156,6 +156,309 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 
 ---
 
+## AUTOMATED BACKEND UPDATE WORKFLOW
+
+**WHEN user asks to update backends** (update backend, update backends, check backend, scan backends, backend status, backend updates):
+→ Execute automated backend update workflow for CURRENT project only
+→ This is autonomous - Automatically updates all backend markdown files with detected API changes
+→ Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md` for documentation format reference
+
+### Trigger Phrases
+
+**Autonomous Update Mode** (scans all backends and updates automatically):
+- "update backend" / "update backends" / "update all backends"
+- "check backend" / "check backends" / "check all backends"
+- "scan backend" / "scan backends"
+- "backend status" / "backend updates"
+- "which backends need updating"
+- "refresh backend docs" / "sync backend docs"
+
+**Manual Single Backend Mode** (updates one specific backend):
+- "update [backend-name]" (e.g., "update traffic-sign-backend")
+- "backend [backend-name] has updated"
+- "[backend-name] needs updating"
+
+### Execution Workflow - Autonomous Mode
+
+**CRITICAL**: Only process backends for the CURRENT project (based on cwd), not all projects globally.
+
+**Step 1: Identify Current Project**
+```
+IF cwd contains /GRG-Wegkenmerken-verkeersborden:
+  → Project = GRG
+  → $CLINERULES_ROOT = /Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/.clinerules
+
+ELSE IF cwd contains /NTM-Publicatie-overzicht:
+  → Project = NTM
+  → $CLINERULES_ROOT = /Users/daniel/Developer/NTM-Publicatie-overzicht/.clinerules
+
+ELSE IF cwd contains /BER-Bereikbaarheidskaart:
+  → Project = BER
+  → $CLINERULES_ROOT = /Users/daniel/Developer/BER-Bereikbaarheidskaart/.clinerules
+```
+
+**Step 2: Extract Backend Registry**
+
+Read `$CLINERULES_ROOT/projects/{PROJECT}/project-instructions.md`
+
+Parse the "Backend Services (Reference Only - Never Edit)" section:
+- Extract backend name (e.g., "traffic-sign-backend")
+- Extract absolute repo path (e.g., `/Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/traffic-sign-backend/`)
+- Calculate doc path: `$CLINERULES_ROOT/projects/{PROJECT}/backend/{backend-name}.md`
+
+Build backend registry array for THIS project only.
+
+**Step 3: For Each Backend in THIS Project**
+
+a. **Read backend markdown file**
+   - Path: `$CLINERULES_ROOT/projects/{PROJECT}/backend/{backend-name}.md`
+   - Parse COMMIT TRACKING table
+   - Extract: Last Verified Commit (short hash like `46ecff61`)
+   - Extract: Last Verified Date
+   - If COMMIT TRACKING missing/malformed → Use fallback: "never verified", scan recent 20 commits
+
+b. **Check for new commits**
+   ```bash
+   cd {backend_repo_path}
+
+   # Validate git repo
+   if ! git rev-parse --git-dir >/dev/null 2>&1; then
+     echo "ERROR: Not a git repository"
+     continue to next backend
+   fi
+
+   # Get commits since last verification
+   git log --oneline {last_verified_commit}..HEAD
+
+   # If commit not found, fallback to recent commits
+   if [ $? -ne 0 ]; then
+     echo "WARNING: Last verified commit not in history, scanning recent commits"
+     git log --oneline -n 20
+   fi
+   ```
+
+c. **Apply API-Relevance Heuristics**
+
+   For each commit message, classify as HIGH / MEDIUM / LOW:
+
+   **HIGH Confidence** (always process):
+   - Contains: `feat`, `feature`, `endpoint`, `api`, `rest`, `controller`, `dto`, `model`, `swagger`, `openapi`
+   - Contains: `breaking`, `deprecate`, `remove`, `delete` (flag for special attention)
+   - Patterns: `add.*endpoint`, `new.*api`, `change.*dto`, `update.*model`
+
+   **MEDIUM Confidence** (process with caution):
+   - Contains API keywords + `update`, `modify`, `change`
+   - Contains: `enum` (often affects API contracts)
+   - Contains: `request`, `response`, `payload`
+
+   **LOW Confidence** (skip - not API-relevant):
+   - Contains: `fix`, `bug`, `typo`, `refactor`, `test`, `doc`, `comment`, `style`, `format`
+   - Contains: `internal`, `cleanup`, `optimize`, `performance` (unless has API keywords)
+   - Contains: `build`, `ci`, `pipeline`, `docker`, `config`, `dependency`
+   - Commit message only changes implementation files, no Controller/DTO/Enum changes
+
+d. **For HIGH/MEDIUM commits: Inspect Code Changes**
+
+   ```bash
+   git show {commit_hash}
+   ```
+
+   Look for changes in:
+   - `*Controller.java` files → New/modified endpoints
+   - `*Dto.java`, `*Request.java`, `*Response.java` files → New/modified DTOs
+   - `*Enum.java` files → New/modified enum values
+   - Swagger/OpenAPI annotations → Documentation hints
+
+   Extract:
+   - Endpoint: HTTP method, path, description (from `@GetMapping`, `@PostMapping`, etc.)
+   - Parameters: Query params, path params, request body
+   - Response: Response structure, status codes
+   - DTOs: Field names, types, required/optional
+   - Enums: Enum name, values
+
+e. **Automatically Update Backend Markdown File**
+
+   Follow format from `update-backend-api-instructions.md`:
+
+   1. **Update Quick Reference Table** (if new features/endpoints added)
+      - Add row for new feature category if needed
+      - List main endpoints and HTTP methods
+
+   2. **Update Detailed Endpoints Section**
+      - Add new endpoint subsection with:
+        - HTTP Method + Path (heading)
+        - Authentication requirement
+        - Description (basic, extracted from code/commit)
+        - Query/path parameters table
+        - Request body structure (if POST/PUT/PATCH)
+        - Response structure with example JSON
+        - Error responses (if documented in code)
+
+   3. **Update DTOs Section**
+      - Add new DTO documentation with:
+        - DTO name (heading)
+        - Purpose (from context)
+        - Fields table (field name, type, required, description)
+        - Example JSON
+
+   4. **Update Enums Section**
+      - Add new enum documentation with:
+        - Enum name (heading)
+        - Values table (value, description)
+
+   5. **Update COMMIT TRACKING Table**
+      ```markdown
+      | Item | Value | Date |
+      |------|-------|------|
+      | Last Verified Commit | {new_commit_hash} | {YYYY-MM-DD} |
+      | Commit Message | {commit_message_summary} | |
+      | Swagger Version | latest | {YYYY-MM-DD} |
+
+      **Status**: ✓ Up to date as of {YYYY-MM-DD}
+      **Next Review**: Check commits after {new_commit_hash}
+      ```
+
+   6. **Save changes** to markdown file
+
+f. **Handle Errors Gracefully**
+
+   | Error | Action |
+   |-------|--------|
+   | Backend path not found | Skip, report: "Backend path invalid, check project-instructions.md" |
+   | Not a git repo | Skip, report: "{backend-name} is not a git repository" |
+   | Commit not found | Fallback to recent 20 commits, add warning to report |
+   | Git command fails | Skip, report: "Could not access {backend-name}, check permissions" |
+   | Cannot parse Java files | Log warning, add manual review note, continue |
+   | No new commits | Report: "✓ Up to date, no changes since {date}" |
+
+**Step 4: Commit All Changes**
+
+After processing all backends:
+
+```bash
+cd $CLINERULES_ROOT
+
+# Stage all modified backend markdown files
+git add projects/{PROJECT}/backend/*.md
+
+# Commit with descriptive message
+git commit -m "docs(backend): automated update for {PROJECT} backends
+
+Updated {count} of {total} backend API documentation files:
+- {backend-name-1}: {change_summary}
+- {backend-name-2}: {change_summary}
+...
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+```
+
+**Step 5: Generate Summary Report**
+
+Present output to user:
+
+```markdown
+# Backend Update Report - {PROJECT}
+
+**Date**: {YYYY-MM-DD}
+**Backends processed**: {total_count}
+
+---
+
+## Summary
+
+- ✓ Up to date: {count} backends (no changes)
+- ✅ Updated: {count} backends (API changes detected and documented)
+- ⚠️ Errors: {count} backends (see details below)
+
+---
+
+## Updated Backends
+
+### {backend-name}
+**Status**: ✅ Updated with {api_change_count} API changes
+**Commits processed**: {commit_count} total, {api_count} API-relevant
+**Last verified**: Now at commit `{new_hash}` (was `{old_hash}`)
+
+**Changes made:**
+- Added endpoint: `POST /traffic-signs/bulk-import`
+- Modified DTO: `TrafficSignSearchCriteria` (added 'category' field)
+- Breaking change: Removed deprecated endpoint `/traffic-signs/legacy`
+- Updated COMMIT TRACKING table
+
+**Commits:**
+- `abc1234` - feat(endpoint): add bulk import endpoint [HIGH]
+- `def5678` - breaking: remove legacy endpoint [HIGH]
+- `ghi9012` - feat(dto): add search category field [HIGH]
+
+---
+
+{repeat for each updated backend}
+
+---
+
+## Backends Up To Date
+
+{for each backend with no changes}
+- ✓ {backend-name} (last verified {date}, still at commit `{hash}`)
+
+---
+
+## Errors / Warnings
+
+{if any backends had errors}
+- ⚠️ {backend-name}: {error_message}
+
+---
+
+## Changes Committed
+
+Committed to `.clinerules` repository:
+```
+docs(backend): automated update for {PROJECT} backends
+
+Updated {count} of {total} backends
+```
+
+**Next steps:**
+- Review the updated markdown files if needed
+- Sync to root CLAUDE.md if you edited .clinerules/claude.md
+- All changes are in git, easily reversible if needed
+```
+
+### Documentation Quality Notes
+
+**What the automation provides:**
+- ✅ Structurally complete documentation (all endpoints, DTOs, enums documented)
+- ✅ Accurate technical details (paths, methods, field types extracted from code)
+- ✅ Consistent formatting following backend-api-format.md
+
+**What may need manual refinement:**
+- ⚠️ Basic descriptions (functional but not detailed with business context)
+- ⚠️ Generic JSON examples (structurally correct but with placeholder values)
+- ⚠️ Edge cases and special behaviors (not visible in code alone)
+
+**Quality level:** 80-90% complete - Good for reference, may need refinement for complex endpoints
+
+**You can always manually edit the markdown files afterward** to add:
+- More detailed business context
+- Realistic example values
+- Edge case documentation
+- Authorization nuances
+
+### Error Handling Summary
+
+All errors are non-fatal - If one backend fails, continue to next backend.
+
+Common scenarios:
+- **Backend repo not accessible** → Skip with warning, report to user
+- **Commit hash not in history** → Fallback to recent 20 commits with note
+- **Cannot parse Java files** → Document what's detectable, flag for manual review
+- **No API changes detected** → Report backend is up to date, update COMMIT TRACKING anyway
+
+All changes are committed to git, so mistakes are easily reversible.
+
+---
+
 ## FILE TYPE RESTRICTIONS - FRONTEND ONLY
 
 All **frontend projects** use ONLY these file types:
