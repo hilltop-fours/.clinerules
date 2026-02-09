@@ -40,6 +40,7 @@ Check your current working directory path and match it against these patterns:
 **WHEN implementing features that use backend APIs**:
 → Project's `project-instructions.md` has backend mapping
 → Backend mapping tells you which backend `.md` file to read
+→ Example: NTM project → read `.clinerules/projects/NTM-Publicatie-overzicht/backend-api.md`
 
 **IF confused about backend API documentation format**:
 → Read `.clinerules/global/backend-api-format.md` (reference only)
@@ -104,10 +105,39 @@ All **frontend projects** use ONLY these file types:
 
 ---
 
+## DEBUGGING & BUILD ERRORS
+
+Frontend projects use build commands to identify issues:
+- Run: `npm run build` or `npx ng build` (from the frontend directory)
+- Build output shows all errors/warnings clearly
+- No persistent log files—errors are caught via build command
+- Debug by: running build, adding console.log statements, re-running build
+- (Chrome DevTools connection via Claude Code is future work, not currently available)
+
+---
+
+## GIT EXECUTION CONTEXT
+
+**Git commands execute from these subdirectories ONLY** (project roots are NOT git repos):
+
+1. **For `.clinerules/**` changes** (rules, docs, API documentation):
+   - Execute git from: `{project-root}/.clinerules/` directory
+   - Example: `/Users/daniel/Developer/NTM-Publicatie-overzicht/.clinerules`
+   - Example: `/Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/.clinerules`
+
+2. **For frontend code changes** (components, services, styles):
+   - Execute git from: `{project-root}/{project-prefix}-frontend/` directory
+   - Example: `/Users/daniel/Developer/NTM-Publicatie-overzicht/ntm-frontend`
+   - Example: `/Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/traffic-sign-frontend`
+
+**Critical**: Never attempt git commands from project root directories (e.g., `/NTM-Publicatie-overzicht/` or `/GRG-Wegkenmerken-verkeersborden/`) as they are NOT git repositories.
+
+---
+
 ## CRITICAL REMINDERS
 
 - Backend is **reference only** - Never edit backend source code
 - Design system is **reference only** - Never edit design system code
 - Project root directories are **NOT git repositories** - Git commands will fail there
-- Git operations MUST execute from frontend subdirectory (specified in `project-instructions.md`)
+- Git operations MUST execute from specified subdirectories (see Git Execution Context above)
 - When in doubt, refer to the project's `project-instructions.md`
