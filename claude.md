@@ -20,6 +20,29 @@ The user should never need to read this. If the user needs information, Claude r
 
 ---
 
+## CLAUDE.MD FILE SYNCHRONIZATION - CRITICAL
+
+**When user asks to edit/update this claude.md file:**
+
+1. **ALWAYS edit `.clinerules/claude.md` FIRST** (the source of truth, version controlled in git)
+2. **Commit the change** to .clinerules repository with git
+3. **THEN sync to root claude.md** (copy the exact same content to `$PROJECT_ROOT/claude.md`)
+   - Root file is NOT version controlled (reference copy only)
+   - Root file must match .clinerules file exactly
+
+**NEVER edit only the root `claude.md`** - changes will not be in git history and will be lost.
+
+**Workflow**:
+```
+Edit .clinerules/claude.md
+  ↓
+Commit to .clinerules with git
+  ↓
+Copy exact content to root claude.md (no commit needed)
+```
+
+---
+
 ## FOLDER STRUCTURE REFERENCE
 
 Quick overview of `.clinerules/` organization:
