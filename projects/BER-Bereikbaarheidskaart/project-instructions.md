@@ -33,33 +33,33 @@ All 4 backends are shared copies from the GRG project, used here for accessibili
 
 When implementing features related to:
 
-- **Traffic Signs (for maps)** → Read `backend/traffic-sign-backend.md`
+- **Traffic Signs (for maps)** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
   - Traffic sign CRUD, validation, removal
   - Traffic sign images and history
   - Map updates (GeoJSON)
 
-- **Organizations & Users** → Read `backend/traffic-sign-backend.md`
+- **Organizations & Users** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
   - Organization management
   - User management and roles (Keycloak)
   - Road authority lookups
 
-- **Findings / Issues** → Read `backend/traffic-sign-backend.md`
+- **Findings / Issues** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
   - Traffic sign findings and issue tracking
   - Black code uploads and validation
 
-- **Vehicle Restrictions (WKD)** → Read `backend/traffic-sign-wkd-backend.md`
+- **Vehicle Restrictions (WKD)** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
   - Speed limits, height/length/load/axle-load restrictions
   - Traffic type and driving direction mutations
   - School zones, road narrowings, road categories
   - NWB version-based mutations and exports
 
-- **Environmental & Emission Zones** → Read `backend/traffic-sign-area-backend.md`
+- **Environmental & Emission Zones** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
   - Environmental zones and emission zones
   - Parking bans and traffic regulations
   - Hazardous substance routes
   - Geographic areas, counties, towns
 
-- **User Feedback / Corrections** → Read `backend/traffic-sign-feedback-backend.md`
+- **User Feedback / Corrections** → Read `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-feedback-backend.md`
   - User-submitted corrections about road features
   - Location-based feedback (GeoJSON points)
 
@@ -67,32 +67,32 @@ When implementing features related to:
 
 When working with specific endpoints:
 
-- `/traffic-signs/**` → `backend/traffic-sign-backend.md`
-- `/images/**` → `backend/traffic-sign-backend.md`
-- `/organizations/**` → `backend/traffic-sign-backend.md`
-- `/users/**` → `backend/traffic-sign-backend.md`
-- `/findings/**` → `backend/traffic-sign-backend.md`
-- `/black-codes/**` → `backend/traffic-sign-backend.md`
-- `/info-messages/**` → `backend/traffic-sign-backend.md`
-- `/road-authorities/**` → `backend/traffic-sign-backend.md`
-- `/speeds/**` → `backend/traffic-sign-wkd-backend.md`
-- `/traffic-types/**` → `backend/traffic-sign-wkd-backend.md`
-- `/height-restrictions/**` → `backend/traffic-sign-wkd-backend.md`
-- `/length-restrictions/**` → `backend/traffic-sign-wkd-backend.md`
-- `/load-restrictions/**` → `backend/traffic-sign-wkd-backend.md`
-- `/axle-load-restrictions/**` → `backend/traffic-sign-wkd-backend.md`
-- `/schoolzones/**` → `backend/traffic-sign-wkd-backend.md`
-- `/road-narrowings/**` → `backend/traffic-sign-wkd-backend.md`
-- `/driving-directions/**` → `backend/traffic-sign-wkd-backend.md`
-- `/export/**` → `backend/traffic-sign-wkd-backend.md`
-- `/environmental-zones/**` → `backend/traffic-sign-area-backend.md`
-- `/emission-zones/**` → `backend/traffic-sign-area-backend.md`
-- `/parking-bans/**` → `backend/traffic-sign-area-backend.md`
-- `/traffic-regulations/**` → `backend/traffic-sign-area-backend.md`
-- `/routes/hazardous-substances/**` → `backend/traffic-sign-area-backend.md`
-- `/areas/**` → `backend/traffic-sign-area-backend.md`
-- `/counties/**` → `backend/traffic-sign-area-backend.md`
-- `/corrections/**` → `backend/traffic-sign-feedback-backend.md`
+- `/traffic-signs/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/images/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/organizations/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/users/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/findings/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/black-codes/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/info-messages/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/road-authorities/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-backend.md`
+- `/speeds/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/traffic-types/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/height-restrictions/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/length-restrictions/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/load-restrictions/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/axle-load-restrictions/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/schoolzones/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/road-narrowings/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/driving-directions/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/export/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-wkd-backend.md`
+- `/environmental-zones/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/emission-zones/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/parking-bans/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/traffic-regulations/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/routes/hazardous-substances/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/areas/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/counties/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-area-backend.md`
+- `/corrections/**` → `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/backend/traffic-sign-feedback-backend.md`
 
 **Note**: This mapping is incomplete. If you need comprehensive endpoint mapping, use the backend crawl prompt provided separately.
 
