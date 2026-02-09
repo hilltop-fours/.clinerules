@@ -217,7 +217,7 @@ a. **Read backend markdown file**
    - Extract: Last Verified Date
    - If COMMIT TRACKING missing/malformed → Use fallback: "never verified", scan recent 20 commits
 
-b. **Check for new commits**
+b. **Pull latest changes from remote**
    ```bash
    cd {backend_repo_path}
 
@@ -227,6 +227,18 @@ b. **Check for new commits**
      continue to next backend
    fi
 
+   # Pull latest changes from remote (to sync with origin)
+   git pull
+
+   # If pull fails, skip this backend
+   if [ $? -ne 0 ]; then
+     echo "ERROR: Git pull failed"
+     continue to next backend
+   fi
+   ```
+
+c. **Check for new commits**
+   ```bash
    # Get commits since last verification
    git log --oneline {last_verified_commit}..HEAD
 
@@ -237,7 +249,7 @@ b. **Check for new commits**
    fi
    ```
 
-c. **Apply API-Relevance Heuristics**
+d. **Apply API-Relevance Heuristics**
 
    For each commit message, classify as HIGH / MEDIUM / LOW:
 
@@ -257,7 +269,7 @@ c. **Apply API-Relevance Heuristics**
    - Contains: `build`, `ci`, `pipeline`, `docker`, `config`, `dependency`
    - Commit message only changes implementation files, no Controller/DTO/Enum changes
 
-d. **For HIGH/MEDIUM commits: Inspect Code Changes**
+e. **For HIGH/MEDIUM commits: Inspect Code Changes**
 
    ```bash
    git show {commit_hash}
@@ -276,7 +288,7 @@ d. **For HIGH/MEDIUM commits: Inspect Code Changes**
    - DTOs: Field names, types, required/optional
    - Enums: Enum name, values
 
-e. **Automatically Update Backend Markdown File**
+f. **Automatically Update Backend Markdown File**
 
    Follow format from `update-backend-api-instructions.md`:
 
@@ -320,12 +332,13 @@ e. **Automatically Update Backend Markdown File**
 
    6. **Save changes** to markdown file
 
-f. **Handle Errors Gracefully**
+g. **Handle Errors Gracefully**
 
    | Error | Action |
    |-------|--------|
    | Backend path not found | Skip, report: "Backend path invalid, check project-instructions.md" |
    | Not a git repo | Skip, report: "{backend-name} is not a git repository" |
+   | Git pull fails | Skip, report: "Git pull failed for {backend-name}, try again later" |
    | Commit not found | Fallback to recent 20 commits, add warning to report |
    | Git command fails | Skip, report: "Could not access {backend-name}, check permissions" |
    | Cannot parse Java files | Log warning, add manual review note, continue |
