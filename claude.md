@@ -53,45 +53,58 @@ Check your current working directory path and match it against these patterns:
 
 **IF path contains `/NTM-Publicatie-overzicht`**:
 - Project: NTM Publicatie Overzicht
-- Read: `.clinerules/projects/NTM-Publicatie-overzicht/project-instructions.md`
+- $CLINERULES_ROOT = `/Users/daniel/Developer/NTM-Publicatie-overzicht/.clinerules`
+- Read: `$CLINERULES_ROOT/projects/NTM-Publicatie-overzicht/project-instructions.md`
 
 **IF path contains `/GRG-Wegkenmerken-verkeersborden`**:
 - Project: GRG Wegkenmerken Verkeersborden
-- Read: `.clinerules/projects/GRG-Wegkenmerken-verkeersborden/project-instructions.md`
+- $CLINERULES_ROOT = `/Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/.clinerules`
+- Read: `$CLINERULES_ROOT/projects/GRG-Wegkenmerken-verkeersborden/project-instructions.md`
 
 **IF path contains `/BER-Bereikbaarheidskaart`**:
 - Project: BER Bereikbaarheidskaart
-- Read: `.clinerules/projects/BER-Bereikbaarheidskaart/project-instructions.md`
+- $CLINERULES_ROOT = `/Users/daniel/Developer/BER-Bereikbaarheidskaart/.clinerules`
+- Read: `$CLINERULES_ROOT/projects/BER-Bereikbaarheidskaart/project-instructions.md`
+
+---
+
+## PATH VARIABLES
+
+For file references in `.clinerules/` documentation, use the `$CLINERULES_ROOT` variable:
+
+**$CLINERULES_ROOT** = Absolute path to `.clinerules/` directory for the current project
+- NTM: `/Users/daniel/Developer/NTM-Publicatie-overzicht/.clinerules`
+- GRG: `/Users/daniel/Developer/GRG-Wegkenmerken-verkeersborden/.clinerules`
+- BER: `/Users/daniel/Developer/BER-Bereikbaarheidskaart/.clinerules`
+
+All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 
 ---
 
 ## READ RULES ON-DEMAND
 
 **BEFORE any git operation** (commit, branch, push, pull, status, checkout):
-→ Read `.clinerules/global/git-instructions.md`
+→ Read `$CLINERULES_ROOT/global/git-instructions.md`
 → **CRITICAL FOR .CLINERULES COMMITS**: Single line only, `type(scope): description` format, separate commits per scope (see git-instructions.md SPECIAL CASE section)
 
 **BEFORE editing ANY code** (components, services, templates, styles):
-→ Read `.clinerules/global/angular-instructions.md`
-→ Reference `.clinerules/validation/angular-*.md` files for detailed style and validation rules
+→ Read `$CLINERULES_ROOT/global/angular-instructions.md`
+→ Reference `$CLINERULES_ROOT/validation/angular-*.md` files for detailed style and validation rules
 
 **WHEN user asks to update backend API docs**:
-→ Read `.clinerules/global/update-backend-api-instructions.md`
+→ Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
 
 **WHEN implementing features or need project context**:
 → Read project-specific `project-instructions.md` (found via project identification above)
 
 **WHEN need frontend-specific coding rules**:
-→ Read `frontend/{repo-name}.md` from the project directory
-→ Examples: `frontend/ntm-frontend.md`, `frontend/traffic-sign-frontend.md`
+→ Read appropriate `frontend/{repo-name}.md` from `$CLINERULES_ROOT/projects/{PROJECT}/frontend/`
 
 **WHEN implementing features that use backend APIs**:
-→ Project's `project-instructions.md` has backend mapping
-→ Backend mapping tells you which backend `.md` file to read
-→ Example: NTM project → read `.clinerules/projects/NTM-Publicatie-overzicht/backend-api.md`
+→ Project's `project-instructions.md` has backend mapping with `$CLINERULES_ROOT` paths
 
 **IF confused about backend API documentation format**:
-→ Read `.clinerules/global/backend-api-format.md` (reference only)
+→ Read `$CLINERULES_ROOT/global/backend-api-format.md` (reference only)
 
 ---
 
@@ -143,13 +156,14 @@ All **frontend projects** use ONLY these file types:
 ## EXECUTION FLOW
 
 1. **Identify project** using working directory path
-2. **Read `project-instructions.md`** for that project
-3. **Based on task**, read additional files:
-   - Git operation → Read `global/git-instructions.md`
-   - Code editing → Read `global/angular-instructions.md` + validation files (`validation/angular-*.md`) + `frontend/{repo}.md`
-   - Backend API work → Read appropriate backend `.md` file
-   - Update backend docs → Read `global/update-backend-api-instructions.md`
-4. **Apply all rules** from the files you read to every action
+2. **Define $CLINERULES_ROOT** based on project (see PROJECT IDENTIFICATION section)
+3. **Read `project-instructions.md`** at `$CLINERULES_ROOT/projects/{PROJECT}/project-instructions.md`
+4. **Based on task**, read additional files:
+   - Git operation → Read `$CLINERULES_ROOT/global/git-instructions.md`
+   - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/validation/angular-*.md` + frontend rules
+   - Backend API work → Read appropriate backend `.md` file (path in project-instructions.md)
+   - Update backend docs → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
+5. **Apply all rules** from the files you read to every action
 
 ---
 
