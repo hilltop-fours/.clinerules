@@ -41,16 +41,23 @@ Each backend markdown file has a **COMMIT TRACKING** section at the top:
 
 The commit hash `abc123def456` is your starting point.
 
-### Step 3: Check New Commits
+### Step 3: Pull Latest Changes and Check New Commits
 
-Navigate to the backend repository and check commits since the last verified commit:
+Navigate to the backend repository, pull the latest changes from remote, and check commits since the last verified commit:
 
 ```bash
 cd /path/to/backend-repo
+
+# Pull latest changes from remote to sync with origin
+git pull
+
+# Check commits since last verified commit
 git log --oneline abc123def456..HEAD
 ```
 
 Review each commit message to determine if it affects the API.
+
+**Important**: Always pull from remote first to ensure you're checking the latest commits, not just local commits. If pull fails, skip this backend and try again later when the issue is resolved.
 
 ### Step 4: Determine What Needs Updating
 
