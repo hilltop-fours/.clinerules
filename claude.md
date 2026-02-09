@@ -58,11 +58,8 @@ Quick overview of `.clinerules/` organization:
 
 - `projects/` - Project-specific configurations
   - `{PROJECT-NAME}/`
-    - `README.md` - Project structure, repository locations, editing boundaries (reference)
-    - `project-instructions.md` - Task-based rules, backend API mapping, patterns
+    - `project-instructions.md` - Frontend coding rules, backend API mapping, patterns
     - `patterns/` - Project-specific code patterns and conventions (optional)
-    - `frontend/` - Frontend-specific coding rules for this project
-      - `{repo-name}.md` - Component structure, naming, style patterns
     - `backend/` - Backend API documentation for this project
       - `{backend-name}.md` - API endpoints, models, request/response formats
 
@@ -120,9 +117,6 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 **WHEN implementing features or need project context**:
 → Read project-specific `project-instructions.md` (found via project identification above)
 
-**WHEN need frontend-specific coding rules**:
-→ Read appropriate `frontend/{repo-name}.md` from `$CLINERULES_ROOT/projects/{PROJECT}/frontend/`
-
 **WHEN implementing features that use backend APIs**:
 → Project's `project-instructions.md` has backend mapping with `$CLINERULES_ROOT` paths
 
@@ -142,7 +136,7 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
   - Angular best practices from `global/angular-instructions.md`
   - Project patterns and requirements from `project-instructions.md`
   - Validation rules from all `validation/*.md` files
-  - Frontend-specific rules from `frontend/{repo-name}.md`
+  - Frontend-specific rules from `project-instructions.md`
 → Generate validation report with:
   - Build & lint status (pass/fail)
   - Files changed with summary
@@ -205,7 +199,7 @@ All **frontend projects** use ONLY these file types:
 3. **Read `project-instructions.md`** at `$CLINERULES_ROOT/projects/{PROJECT}/project-instructions.md`
 4. **Based on task**, read additional files:
    - Git operation → Read `$CLINERULES_ROOT/global/git-instructions.md`
-   - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/validation/angular-*.md` + frontend rules
+   - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/validation/angular-*.md`
    - Backend API work → Read appropriate backend `.md` file (path in project-instructions.md)
    - Update backend docs → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
 5. **Apply all rules** from the files you read to every action
