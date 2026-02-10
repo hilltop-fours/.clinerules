@@ -28,6 +28,62 @@ Working directory path contains: `/GRG-Wegkenmerken-verkeersborden`
 
 ---
 
+## FRONTEND CODING RULES
+
+### File Type Restrictions
+
+This project uses ONLY:
+- TypeScript: `.ts` files
+- HTML templates: `.html` files
+- SCSS styles: `.scss` files
+
+When using Glob tool, use pattern: `**/*.{ts,html,scss}`
+
+NEVER search for or work with: `.js`, `.jsx`, `.tsx`, `.css`, `.less`, `.vue` files
+
+### Design System
+
+**Location**: `/ndw-design/` (reference only, never edit)
+
+**Usage Rules**:
+- Most common components available: cards, tabs, buttons, forms, modals, drawers, inputs, selects, etc.
+- Design system components have associated models/interfaces
+- NEVER hardcode strings/values that exist in component models
+- Default to design system components when creating UI elements
+- Assume components exist unless explicitly told otherwise
+- If unsure about a component, search design system first before creating custom components
+
+### Language Rules
+
+**Code & Comments**: English only
+- Variable names: English
+- Function names: English
+- Class names: English
+- Comments: English
+
+**Commit Messages**: English only
+- Follow rules in `.clinerules/global/git-instructions.md`
+
+**UI Text**: Dutch only
+- All user-facing text must be in Dutch
+
+**CRITICAL: NO TRANSLATION SYSTEM**
+- GRG does NOT use ngx-translate or any i18n framework
+- There are NO translation files (no `nl.json`, no `en.json`)
+- UI text is hardcoded as Dutch strings directly in templates
+
+**Example**:
+```typescript
+// ✅ CORRECT for GRG - hardcoded Dutch
+<h1>Verkeersborden</h1>
+<button>Opslaan</button>
+
+// ❌ WRONG for GRG - do NOT use translation keys
+<h1>{{ 'TRAFFIC_SIGNS.TITLE' | translate }}</h1>
+```
+
+---
+
 ## BACKEND API MAPPING
 
 *Last crawled: 2026-02-03*
@@ -269,8 +325,6 @@ GRG-Wegkenmerken-verkeersborden/
 └── .clinerules/                       ← Editable (documentation only)
     └── projects/GRG-Wegkenmerken-verkeersborden/
         ├── project-instructions.md    ← You are here
-        ├── frontend/
-        │   └── traffic-sign-frontend.md
         └── backend/
             ├── traffic-sign-backend.md
             ├── traffic-sign-area-backend.md
@@ -285,8 +339,6 @@ GRG-Wegkenmerken-verkeersborden/
 ---
 
 ## WHEN TO READ OTHER FILES
-
-**For frontend coding rules**: Read `frontend/traffic-sign-frontend.md`
 
 **For backend API details**: Read the appropriate backend markdown file based on the mapping above
 
