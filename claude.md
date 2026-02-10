@@ -140,9 +140,10 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 → Execute validation checks:
   - Run `npm run build` from frontend directory (check compilation errors)
   - Run `npm run lint` (check ESLint violations)
-  - Run `npm run format` (check Prettier formatting)
-  - Use `git diff main...HEAD --name-only --diff-filter=ACMR` to identify changed files in branch
-  - For Prettier: Only check files changed in this branch (not entire project)
+  - **Prettier check on changed files only**:
+    1. Get changed files: `git diff main...HEAD --name-only --diff-filter=ACMR '*.ts' '*.html' '*.scss'`
+    2. Run `prettier --check [changed files]` to identify which need formatting
+    3. Do NOT use `npm run format` or `npm run format:check` (they affect all files in project)
 → Review all changes against:
   - Angular best practices from `global/angular-instructions.md`
   - Project patterns and requirements from `project-instructions.md`
@@ -156,7 +157,7 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
   - Violations with severity levels
   - Actionable recommendations for fixes
   - **Note**: If issues found, present findings only (no automatic fixes unless explicitly requested)
-  - **Prettier auto-fix**: If formatting issues found, ask user if they want to run `prettier --write` on affected files only
+  - **Prettier auto-fix**: If formatting issues found, ask user if they want to fix them, then run `prettier --write [specific files]` on only those files that need formatting
 
 ---
 
