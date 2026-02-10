@@ -27,6 +27,61 @@ All 4 backends are shared copies from the GRG project, used here for accessibili
 
 ---
 
+## FRONTEND CODING RULES
+
+### File Type Restrictions
+
+This project uses ONLY:
+- TypeScript: `.ts` files
+- HTML templates: `.html` files
+- SCSS styles: `.scss` files
+
+When using Glob tool, use pattern: `**/*.{ts,html,scss}`
+
+NEVER search for or work with: `.js`, `.jsx`, `.tsx`, `.css`, `.less`, `.vue` files
+
+### Design System
+
+**Location**: `/ndw-design/` (reference only, never edit — shared GRG design system)
+
+**Usage Rules**:
+- Most common components available: cards, tabs, buttons, forms, modals, drawers, inputs, selects, etc.
+- Design system components have associated models/interfaces
+- NEVER hardcode strings/values that exist in component models
+- Default to design system components when creating UI elements
+- Assume components exist unless explicitly told otherwise
+- If unsure about a component, search design system first before creating custom components
+
+### Language Rules
+
+**Code & Comments**: English only
+- Variable names: English
+- Function names: English
+- Class names: English
+- Comments: English
+
+**Commit Messages**: English only
+- Follow rules in `.clinerules/global/git-instructions.md`
+
+**UI Text**: Dutch only
+- All user-facing text must be in Dutch
+- **CRITICAL**: BER has NO translation system (no ngx-translate, no i18n files)
+- UI text is hardcoded Dutch strings directly in templates
+- Do NOT introduce translation keys or translation pipes
+
+**Example**:
+```html
+<!-- ✅ CORRECT for BER - hardcoded Dutch -->
+<h1>Bereikbaarheidskaart</h1>
+<button>Opslaan</button>
+
+<!-- ❌ WRONG - do NOT use translation keys in BER -->
+<h1>{{ 'MAP.TITLE' | translate }}</h1>
+<button>{{ 'GENERAL.SAVE' | translate }}</button>
+```
+
+---
+
 ## BACKEND API MAPPING
 
 ### By Feature Domain
@@ -112,8 +167,6 @@ BER-Bereikbaarheidskaart/
 └── .clinerules/                      ← Editable (documentation only)
     └── projects/BER-Bereikbaarheidskaart/
         ├── project-instructions.md   ← You are here
-        ├── frontend/
-        │   └── accessibility-map-frontend.md
         └── backend/
             ├── traffic-sign-backend.md
             ├── traffic-sign-wkd-backend.md
@@ -125,8 +178,6 @@ BER-Bereikbaarheidskaart/
 
 ## WHEN TO READ OTHER FILES
 
-**For frontend coding rules**: Read `frontend/accessibility-map-frontend.md`
-
 **For backend API details**: Read the appropriate backend markdown file based on the mapping above
 
-**For updating backend API docs**: Read `.clinerules/global/update-backend-api-instructions.md`
+**For updating backend API docs**: Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
