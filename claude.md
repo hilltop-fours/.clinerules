@@ -140,7 +140,9 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 → Execute validation checks:
   - Run `npm run build` from frontend directory (check compilation errors)
   - Run `npm run lint` (check ESLint violations)
-  - Use `git diff main...HEAD --name-only` to identify all changed files in branch
+  - Run `npm run format` (check Prettier formatting)
+  - Use `git diff main...HEAD --name-only --diff-filter=ACMR` to identify changed files in branch
+  - For Prettier: Only check files changed in this branch (not entire project)
 → Review all changes against:
   - Angular best practices from `global/angular-instructions.md`
   - Project patterns and requirements from `project-instructions.md`
@@ -148,11 +150,13 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
   - Frontend-specific rules from `project-instructions.md`
 → Generate validation report with:
   - Build & lint status (pass/fail)
+  - **Prettier status**: List files needing formatting (only from changed files)
   - Files changed with summary
   - Code quality findings organized by category
   - Violations with severity levels
   - Actionable recommendations for fixes
   - **Note**: If issues found, present findings only (no automatic fixes unless explicitly requested)
+  - **Prettier auto-fix**: If formatting issues found, ask user if they want to run `prettier --write` on affected files only
 
 ---
 
