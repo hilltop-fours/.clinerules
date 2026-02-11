@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-wkd-backend API. This service manages ve
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 6768721 | 2026-02-10 |
-| Commit Message | Feature #89803 Send driving direction and BST to NLS (no API changes) | |
-| Swagger Version | latest | 2026-02-10 |
+| Last Verified Commit | c66bbf5 | 2026-02-11 |
+| Commit Message | chore(deps): update all non-major dependencies (no API changes) | |
+| Swagger Version | latest | 2026-02-11 |
 
-**Status**: ✓ Up to date as of 2026-02-10
-**Next Review**: Check commits after 6768721
+**Status**: ✓ Up to date as of 2026-02-11
+**Next Review**: Check commits after c66bbf5
 
 ---
 
