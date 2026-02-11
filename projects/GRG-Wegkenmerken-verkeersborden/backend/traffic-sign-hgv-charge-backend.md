@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-hgv-charge-backend API. This service man
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | f38d338 | 2026-02-10 |
-| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
-| Swagger Version | latest | 2026-02-10 |
+| Last Verified Commit | 522f833 | 2026-02-11 |
+| Commit Message | chore(deps): update all non-major dependencies (no API changes) | |
+| Swagger Version | latest | 2026-02-11 |
 
-**Status**: ✓ Up to date as of 2026-02-10
-**Next Review**: Check commits after f38d338
+**Status**: ✓ Up to date as of 2026-02-11
+**Next Review**: Check commits after 522f833
 
 ---
 
