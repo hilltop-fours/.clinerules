@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | ccf2627e | 2026-02-10 |
-| Commit Message | Feature #109403 Update new user email (no API changes) | |
-| Swagger Version | latest | 2026-02-10 |
+| Last Verified Commit | 8037e0cb | 2026-02-11 |
+| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
+| Swagger Version | latest | 2026-02-11 |
 
-**Status**: ✓ Up to date as of 2026-02-10
-**Next Review**: Check commits after ccf2627e
+**Status**: ✓ Up to date as of 2026-02-11
+**Next Review**: Check commits after 8037e0cb
 
 ---
 
