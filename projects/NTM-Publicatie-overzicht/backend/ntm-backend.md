@@ -8,12 +8,12 @@ Complete reference for the NTM Backend API. This service manages data publicatio
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | a78215a | 2026-02-04 |
-| Commit Message | Feature #106687 Add create status flow for imported sets (no API changes) | |
-| Swagger Version | latest | 2026-01-30 |
+| Last Verified Commit | 1b56e18 | 2026-02-11 |
+| Commit Message | Feature #106687 Support filter on reviewstatus | |
+| Swagger Version | latest | 2026-02-11 |
 
-**Status**: ✓ Up to date as of 2026-02-04
-**Next Review**: Check commits after a78215a
+**Status**: ✓ Up to date as of 2026-02-11
+**Next Review**: Check commits after 1b56e18
 
 ---
 
@@ -142,15 +142,26 @@ Complete reference for the NTM Backend API. This service manages data publicatio
 
 **Authentication**: Keycloak NTM
 
-**Description**: Get publications pending review/approval (for reviewers).
+**Description**: Get publications pending review/approval (for reviewers), with optional filtering by review status.
 
 **Query Parameters**:
 - `pageable` (Pageable, required) - Pagination parameters
+- `reviewStatus` (List<ReviewStatus>, optional) - Filter by review status(es). Accepts multiple values (comma-separated).
+  - When omitted: Returns publications with statuses `PENDING_REVIEW`, `IMPORTED`, and `HELD` (default behavior)
+  - When specified: Returns only publications matching the provided status(es)
+  - Special behavior: When `PENDING_REVIEW` is included, `HELD` status is automatically included as well
+  - Valid values: `PENDING_REVIEW`, `IMPORTED`, `HELD`, `APPROVED`, `REJECTED`
 
 **Response** (HTTP 200): PagedModelDataPublicationDto
 
+**Examples**:
+- `/data-publications/to-approve?page=0&size=10` - Returns all publications with default statuses (PENDING_REVIEW, IMPORTED, HELD)
+- `/data-publications/to-approve?reviewStatus=IMPORTED` - Returns only IMPORTED publications
+- `/data-publications/to-approve?reviewStatus=PENDING_REVIEW` - Returns PENDING_REVIEW and HELD publications
+- `/data-publications/to-approve?reviewStatus=IMPORTED,PENDING_REVIEW` - Returns IMPORTED, PENDING_REVIEW, and HELD publications
+
 **Notes**:
-- Only accessible to users with review/approval permissions
+- Only accessible to users with review/approval permissions (ROLE_ADMIN_READER or higher)
 
 ---
 
