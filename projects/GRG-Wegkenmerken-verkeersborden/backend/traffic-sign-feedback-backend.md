@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-feedback-backend API. This service manag
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 150ca5e | 2026-02-10 |
-| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
-| Swagger Version | latest | 2026-02-10 |
+| Last Verified Commit | 20f8f99 | 2026-02-11 |
+| Commit Message | chore(deps): update all non-major dependencies to v7.6.0 (no API changes) | |
+| Swagger Version | latest | 2026-02-11 |
 
-**Status**: ✓ Up to date as of 2026-02-10
-**Next Review**: Check commits after 150ca5e
+**Status**: ✓ Up to date as of 2026-02-11
+**Next Review**: Check commits after 20f8f99
 
 ---
 
