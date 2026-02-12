@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 886a2aff | 2026-02-12 |
-| Commit Message | Feature #108600 Include roadauthority code and type | |
+| Last Verified Commit | d2055bf3 | 2026-02-12 |
+| Commit Message | feat(findings): #109233 Add get by ID endpoint for findings | |
 | Swagger Version | latest | 2026-02-12 |
 
 **Status**: ✓ Up to date as of 2026-02-12
-**Next Review**: Check commits after 886a2aff
+**Next Review**: Check commits after d2055bf3
 
 ---
 
@@ -578,6 +578,33 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 **Notes**:
 - Creates or updates finding if already exists for same traffic sign + reason
+
+---
+
+#### GET /findings/{id}
+
+**Authentication**: ROLE_TRAFFIC_SIGN_WRITER or ROLE_TRAFFIC_SIGN_FINDING_WRITER
+
+**Path Parameters**:
+- `{id}` (UUID, required) - Finding identifier
+
+**Response** (HTTP 200): TrafficSignFindingDto
+
+**Example Response**:
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "trafficSign": {
+    "id": "660e8400-e29b-41d4-a716-446655440001"
+  },
+  "reason": "NO_COUNTERPART",
+  "status": "NEW",
+  "feedbackText": "Finding details"
+}
+```
+
+**Notes**:
+- Retrieves a single finding by its unique identifier
 
 ---
 
