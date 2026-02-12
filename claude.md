@@ -141,6 +141,8 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 
 **WHEN user asks to validate code** (validate, review, check code quality):
 → Read validation files:
+  - `$CLINERULES_ROOT/global/angular-instructions.md` - Angular coding rules and patterns
+  - `$CLINERULES_ROOT/global/code-simplicity.md` - Code simplicity and complexity rules
   - `$CLINERULES_ROOT/validation/angular-style.md` - Code style preferences
   - `$CLINERULES_ROOT/validation/angular-class-structure.md` - Class organization
   - `$CLINERULES_ROOT/validation/sonarqube-rules.md` - SonarQube violations
@@ -152,9 +154,8 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
     2. Run `prettier --check [changed files]` to identify which need formatting
     3. Do NOT use `npm run format` or `npm run format:check` (they affect all files in project)
 → Review all changes against:
-  - Angular best practices from `global/angular-instructions.md`
+  - All rules from the validation files read above
   - Project patterns and requirements from `project-instructions.md`
-  - Validation rules from all `validation/*.md` files
   - Frontend-specific rules from `project-instructions.md`
 → Generate validation report with:
   - Build & lint status (pass/fail)
