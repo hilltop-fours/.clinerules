@@ -50,6 +50,7 @@ Quick overview of `.clinerules/` organization:
 - `global/` - Shared rules for all projects
   - `git-instructions.md` - Git workflow, commit messages, branch naming, pushing
   - `angular-instructions.md` - Angular coding standards and patterns
+  - `code-simplicity.md` - Code simplicity, anti-patterns, and human-appropriate output
   - `update-backend-api-instructions.md` - How to update backend documentation
   - `backend-api-format.md` - Format reference for backend API documentation
 
@@ -118,7 +119,9 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 
 **BEFORE editing ANY code** (components, services, templates, styles):
 → Read `$CLINERULES_ROOT/global/angular-instructions.md`
+→ Read `$CLINERULES_ROOT/global/code-simplicity.md`
 → Reference `$CLINERULES_ROOT/validation/angular-*.md` files for detailed style and validation rules
+→ During development: if code is getting complex, add `// COMPLEXITY: reason` in code and flag in response (see code-simplicity.md)
 
 **WHEN user asks to update backend API docs**:
 → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
@@ -158,6 +161,19 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
   - Actionable recommendations for fixes
   - **Note**: If issues found, present findings only (no automatic fixes unless explicitly requested)
   - **Prettier auto-fix**: If formatting issues found, ask user if they want to fix them, then run `prettier --write [specific files]` on only those files that need formatting
+
+**WHEN user asks to review complexity** (review complexity, check complexity, simplicity check, review the code):
+→ Read `$CLINERULES_ROOT/global/code-simplicity.md`
+→ Execute the Manual Review Process defined in code-simplicity.md
+→ For each file changed:
+  - Is every new method/function tied to a specific requirement?
+  - Does every pattern used match patterns found elsewhere in the codebase?
+  - Are there abstractions used only once? (Inline them)
+  - Could a mid-level frontend developer understand this without asking questions?
+  - Does the code introduce any patterns not seen elsewhere in the project?
+  - Are there any remaining `// COMPLEXITY:` markers? (Must be resolved before PR)
+→ Present findings organized by file with specific recommendations
+→ Include summary: X issues found across Y files
 
 ---
 
@@ -529,7 +545,7 @@ All **frontend projects** use ONLY these file types:
 3. **Read `project-instructions.md`** at `$CLINERULES_ROOT/projects/{PROJECT}/project-instructions.md`
 4. **Based on task**, read additional files:
    - Git operation → Read `$CLINERULES_ROOT/global/git-instructions.md`
-   - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/validation/angular-*.md`
+   - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/global/code-simplicity.md` + `$CLINERULES_ROOT/validation/angular-*.md`
    - Backend API work → Read appropriate backend `.md` file (path in project-instructions.md)
    - Update backend docs → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
 5. **Apply all rules** from the files you read to every action
