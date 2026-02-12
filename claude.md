@@ -53,6 +53,7 @@ Quick overview of `.clinerules/` organization:
   - `code-simplicity.md` - Code simplicity, anti-patterns, and human-appropriate output
   - `update-backend-api-instructions.md` - How to update backend documentation
   - `backend-api-format.md` - Format reference for backend API documentation
+  - `pr-review-workflow.md` - PR review comment handling workflow and response style
 
 - `validation/` - Detailed validation and style enforcement rules
   - `angular-*.md` - Specific Angular style and validation rules
@@ -122,6 +123,9 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 → Read `$CLINERULES_ROOT/global/code-simplicity.md`
 → Reference `$CLINERULES_ROOT/validation/angular-*.md` files for detailed style and validation rules
 → During development: if code is getting complex, add `// COMPLEXITY: reason` in code and flag in response (see code-simplicity.md)
+
+**WHEN user reports a PR review comment** (PR comment, review comment, got feedback on PR, reviewer said):
+→ Read `$CLINERULES_ROOT/global/pr-review-workflow.md`
 
 **WHEN user asks to update backend API docs**:
 → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
@@ -548,6 +552,7 @@ All **frontend projects** use ONLY these file types:
    - Code editing → Read `$CLINERULES_ROOT/global/angular-instructions.md` + `$CLINERULES_ROOT/global/code-simplicity.md` + `$CLINERULES_ROOT/validation/angular-*.md`
    - Backend API work → Read appropriate backend `.md` file (path in project-instructions.md)
    - Update backend docs → Read `$CLINERULES_ROOT/global/update-backend-api-instructions.md`
+   - PR review comment → Read `$CLINERULES_ROOT/global/pr-review-workflow.md`
 5. **Apply all rules** from the files you read to every action
 
 ---
