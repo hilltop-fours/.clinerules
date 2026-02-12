@@ -8,12 +8,12 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 
 | Item | Value | Date |
 |------|-------|------|
-| Last Verified Commit | 8037e0cb | 2026-02-11 |
-| Commit Message | Feature #109219 Use network management build pool (no API changes) | |
-| Swagger Version | latest | 2026-02-11 |
+| Last Verified Commit | 886a2aff | 2026-02-12 |
+| Commit Message | Feature #108600 Include roadauthority code and type | |
+| Swagger Version | latest | 2026-02-12 |
 
-**Status**: ✓ Up to date as of 2026-02-11
-**Next Review**: Check commits after 8037e0cb
+**Status**: ✓ Up to date as of 2026-02-12
+**Next Review**: Check commits after 886a2aff
 
 ---
 
@@ -838,6 +838,7 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 | `externalIds` | Array<ExternalIdResponseDto> | No | - | External system IDs |
 | `textSigns` | Array<TrafficSignTextSignResponseDto> | No | - | Text content on sign |
 | `publishedOn` | DateTime | No | ISO 8601 | Publication timestamp |
+| `owner` | RoadAuthorityDto | No | nested | Sign owner (road authority) - populated from road section if not explicitly set |
 
 **Example**:
 ```json
@@ -853,6 +854,10 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
       "number": 12,
       "roadSectionId": 12345
     }
+  },
+  "owner": {
+    "type": "P",
+    "code": "UT"
   }
 }
 ```
@@ -875,6 +880,32 @@ Complete reference for the traffic-sign-backend API. This is the core backend se
 | `textSigns` | Array<TrafficSignTextSignRequestDto> | No | - | Text on sign |
 | `externalIds` | Array<ExternalIdRequestDto> | No | - | External IDs |
 | `places` | Integer | No | positive | Number of physical signs |
+
+---
+
+### RoadAuthorityDto
+
+**Used in**: TrafficSignResponseDto (as `owner` field), GET `/road-authorities`, GET `/road-authorities/search`
+
+**Description**: Represents a road authority (wegbeheerder) responsible for managing traffic signs.
+
+| Field | Type | Required | Constraints | Description |
+|-------|------|----------|-------------|-------------|
+| `type` | RoadAuthorityType (Enum) | Yes | R, P, G, W, T | Authority type |
+| `code` | String | Yes | - | Authority code (e.g., "344" for Utrecht, "UT" for province Utrecht, "R" for Rijkswaterstaat) |
+
+**Example**:
+```json
+{
+  "type": "G",
+  "code": "344"
+}
+```
+
+**Notes**:
+- For traffic signs, `owner` field is automatically populated from the road section authority if not explicitly set
+- Empty owner (null) indicates signs on private property or without road section assignment
+- Authorization checks use the `owner` field to determine edit permissions
 
 ---
 
