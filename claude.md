@@ -147,25 +147,28 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
   - `$CLINERULES_ROOT/validation/angular-class-structure.md` - Class organization
   - `$CLINERULES_ROOT/validation/sonarqube-rules.md` - SonarQube violations
 → Execute validation checks:
+  - **CRITICAL**: Use git merge-base to find the true baseline (where the branch diverged from main)
   - Run `npm run build` from frontend directory (check compilation errors)
   - Run `npm run lint` (check ESLint violations)
   - **Prettier check on changed files only**:
-    1. Get changed files: `git diff main...HEAD --name-only --diff-filter=ACMR '*.ts' '*.html' '*.scss'`
-    2. Run `prettier --check [changed files]` to identify which need formatting
+    1. Get changed files: `git diff $(git merge-base HEAD origin/main)...HEAD --name-only --diff-filter=ACMR '*.ts' '*.html' '*.scss'`
+    2. Run `npx prettier --check [changed files]` to identify which need formatting
     3. Do NOT use `npm run format` or `npm run format:check` (they affect all files in project)
+    4. **Why merge-base**: Compares to where we branched from main, not current main (ignores other developers' merges)
 → Review all changes against:
   - All rules from the validation files read above
   - Project patterns and requirements from `project-instructions.md`
   - Frontend-specific rules from `project-instructions.md`
+  - **Use**: `git diff $(git merge-base HEAD origin/main)...HEAD` to get the diff for review
 → Generate validation report with:
   - Build & lint status (pass/fail)
   - **Prettier status**: List files needing formatting (only from changed files)
-  - Files changed with summary
+  - Files changed with summary (use `git diff $(git merge-base HEAD origin/main)...HEAD --stat`)
   - Code quality findings organized by category
   - Violations with severity levels
   - Actionable recommendations for fixes
   - **Note**: If issues found, present findings only (no automatic fixes unless explicitly requested)
-  - **Prettier auto-fix**: If formatting issues found, ask user if they want to fix them, then run `prettier --write [specific files]` on only those files that need formatting
+  - **Prettier auto-fix**: If formatting issues found, ask user if they want to fix them, then run `npx prettier --write [specific files]` on only those files that need formatting
 
 **WHEN user asks to review complexity** (review complexity, check complexity, simplicity check, review the code):
 → Read `$CLINERULES_ROOT/global/code-simplicity.md`
