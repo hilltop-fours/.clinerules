@@ -33,17 +33,16 @@ This is the most critical step — the original text gets lost when conversation
 
 ### Where to save
 
-Create a markdown file in the **project root** (not in `.clinerules/`).
+Create a markdown file in the **`.stories/`** folder in the project root.
 
 **Filename convention:**
-- Derived from what the PR title would be
-- Format: `type(scope)-storyId-taskId-description.md`
-- Keep `()` for scope, strip `#` and `:`, spaces become `-`, all lowercase
-- Type: `feat` for features, `bug` for bugs, `chore` for chores (matches git-instructions.md)
+- Format: `storyId-taskId-description.md`
+- Just the IDs and description, no type/scope prefix
+- Strip `#` and `:`, spaces become `-`, all lowercase
 
 Examples:
 - PR title: `feat(map): #12345 #67890 add map zoom controls`
-- Filename: `feat(map)-12345-67890-add-map-zoom-controls.md`
+- Filename: `.stories/12345-67890-add-map-zoom-controls.md`
 
 **One file per task/bug** — if a story has multiple children, each gets its own file with the shared story context repeated at the top.
 
@@ -98,16 +97,41 @@ Examples:
 
 ## STEP 2: ANALYZE & DISCUSS
 
-After saving the text, explain back to the user what needs to be done.
+After saving the text, explore the relevant codebase and explain back to the user what needs to be done.
+
+**Steps 1 and 2 can run in parallel** — while saving the story text (Step 1), also start exploring the codebase to understand what exists and what needs to be built. This gives you enough context to ask informed questions.
 
 **Rules:**
 - Conversational only — NO code examples, NO implementation details yet
 - Explain in plain language what the story/task is asking for
-- Identify any ambiguities or open questions
+- Identify what already exists in the codebase that can be reused
 - Confirm understanding with the user before moving to planning
 - Goal: both Claude and user agree on WHAT needs to be done before discussing HOW
 
-**After discussion, update the Analysis section** in the story file with a summary of what was agreed.
+### Ask clarifying questions with AskUserQuestion
+
+While analyzing, actively identify gaps and ambiguities. Use the `AskUserQuestion` tool to resolve them — do NOT assume answers or skip over unclear parts.
+
+**When to ask:**
+- Something in the story text is vague or could be interpreted multiple ways
+- There are multiple valid approaches to a requirement (UX, technical, or architectural)
+- A dependency is unclear (is a backend merged? does data exist? what's the source?)
+- You found existing code that partially matches but isn't certain to be the right fit
+- Business logic has edge cases the story doesn't explicitly cover
+
+**How to ask:**
+- Use `AskUserQuestion` with concrete options based on what you found in the code
+- Frame options around what you discovered — don't ask generic questions
+- Group related questions together (up to 4 per call) to avoid back-and-forth
+- If you're fairly confident but want confirmation, put your best guess as the first option
+
+**Example patterns:**
+- "The story says X, but the codebase has Y. Which should we follow?"
+- "This could work as [option A] or [option B] — which fits better?"
+- "Is [dependency] available, or do we need to mock it?"
+- "The acceptance criteria mention Z but don't specify [detail]. How should this work?"
+
+**After discussion, update the Analysis section** in the story file with a summary of what was agreed, including answers to all clarifying questions.
 
 ---
 
