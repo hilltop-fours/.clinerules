@@ -140,10 +140,64 @@ PURPOSE: Enable imports like `import { MyComponent } from './components/my-compo
 ONLY add comments when:
 - Marking temporary/mocked data: Use `// TODO: remove mock data` or `// Temporary for testing`
 - Explaining complex logic: Explain "why" not "what"
+- Complex business rules that aren't obvious from code alone
 
 DO NOT add comments for:
 - Obvious code that is self-explanatory
 - Describing what code does (use clear naming instead)
+- **JSDoc on simple methods** — method names, parameter names, and TypeScript types already communicate intent
+- **JSDoc describing parameters/returns** — TypeScript types are self-documenting
+- **Class-level JSDoc** that just repeats the class name
+
+**SPECIFICALLY PROHIBITED - Decorative JSDoc:**
+
+❌ WRONG (describes "what", duplicates type info):
+```typescript
+/**
+ * Service for managing traffic sign ownership
+ */
+@Injectable({ providedIn: 'root' })
+export class TrafficSignOwnerService {
+  /**
+   * Changes the owner of a traffic sign
+   * @param trafficSignId - The ID of the traffic sign
+   * @param request - The ownership change request
+   * @returns Observable of the change response
+   */
+  changeOwner(trafficSignId: string, request: OwnerChangeRequest): Observable<OwnerChangeResponse> {
+    return this.#http.put<OwnerChangeResponse>(...);
+  }
+}
+```
+
+✅ CORRECT (no JSDoc, types are self-documenting):
+```typescript
+@Injectable({ providedIn: 'root' })
+export class TrafficSignOwnerService {
+  changeOwner(trafficSignId: string, request: OwnerChangeRequest): Observable<OwnerChangeResponse> {
+    return this.#http.put<OwnerChangeResponse>(...);
+  }
+}
+```
+
+✅ ACCEPTABLE (explains "why" for non-obvious logic):
+```typescript
+canChangeOwner(trafficSign: TrafficSign, permissions: UserOwnershipPermissions): boolean {
+  // Signs without owners can always be claimed by anyone
+  if (!trafficSign.ownerRoadAuthorityCode) {
+    return true;
+  }
+
+  // Only admins and global users can override existing ownership
+  return permissions.isAdmin || permissions.hasGlobalMutationPermissions;
+}
+```
+
+**When JSDoc IS appropriate:**
+- Complex algorithms where the "why" isn't obvious
+- Non-obvious business rules or edge cases
+- Workarounds for framework limitations or bugs
+- Public APIs in shared libraries (not typical app code)
 
 NEVER remove existing comments:
 - Preserve ALL comments that were already in the code
