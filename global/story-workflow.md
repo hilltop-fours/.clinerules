@@ -171,6 +171,13 @@ Sometimes development requires mock data or special tooling because:
 **When needed:**
 - Create a small dev tools component for the development period
 - Keep it simple — just enough to unblock development
+
+**CRITICAL — Phase ordering:** Dev tools must come EARLY in the implementation plan — right after the bare-bones setup (models, shell component, basic wiring). Every subsequent phase should be testable with real-looking data from day one. Do NOT leave dev tools as the last phase.
+
+Typical ordering:
+1. Phase 1: Models, interfaces, basic component shells, wiring
+2. Phase 2: Dev tools + mock data + mock services ← HERE, not at the end
+3. Phase 3+: Actual feature work (now immediately testable with mock data)
 - User decides when to clean it up (no automatic cleanup phase)
 
 ---
