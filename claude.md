@@ -54,6 +54,7 @@ Quick overview of `.clinerules/` organization:
   - `update-backend-api-instructions.md` - How to update backend documentation
   - `backend-api-format.md` - Format reference for backend API documentation
   - `pr-review-workflow.md` - PR review comment handling workflow and response style
+  - `story-workflow.md` - Standard workflow when starting a new story/task/bug
 
 - `validation/` - Detailed validation and style enforcement rules
   - `angular-*.md` - Specific Angular style and validation rules
@@ -117,6 +118,11 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
 → Commit changes in whichever repo(s) have them
 → If both repos have changes, commit each repo separately following git-instructions rules
 → If user specifies a repo (e.g., "commit the frontend changes"), only commit that repo
+
+**WHEN user starts a new story or task** (new story, start story, new task, start task, new bug, start bug, here's the story, here's the task):
+→ Read `$CLINERULES_ROOT/global/story-workflow.md`
+→ Follow the workflow steps defined in that file
+→ Also read project-specific `project-instructions.md` for context
 
 **BEFORE editing ANY code** (components, services, templates, styles):
 → Read `$CLINERULES_ROOT/global/angular-instructions.md`
