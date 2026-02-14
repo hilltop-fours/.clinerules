@@ -161,6 +161,12 @@ All file references use this pattern: `$CLINERULES_ROOT/path/to/file.md`
     2. Run `npx prettier --check [changed files]` to identify which need formatting
     3. Do NOT use `npm run format` or `npm run format:check` (they affect all files in project)
     4. **Why merge-base**: Compares to where we branched from main, not current main (ignores other developers' merges)
+  - **JSDoc check on changed TypeScript files**:
+    1. Get changed .ts files: `git diff $(git merge-base HEAD origin/main)...HEAD --name-only --diff-filter=ACMR '*.ts'`
+    2. Check for prohibited JSDoc patterns: `grep -n '^\s*/\*\*' [changed .ts files]` or `grep -n '@param\|@returns' [changed .ts files]`
+    3. Review each match to determine if it's decorative JSDoc (prohibited) or legitimate complex-logic documentation (allowed)
+    4. **Flag as violation**: JSDoc that describes "what" instead of "why", or duplicates TypeScript type information
+    5. **Allow**: JSDoc explaining complex algorithms, non-obvious business rules, or workarounds (rare)
 → Review all changes against:
   - All rules from the validation files read above
   - Project patterns and requirements from `project-instructions.md`
